@@ -1,7 +1,7 @@
-﻿using UserDBService.Source.Interface;
-using UserDBService.Source.Util;
+﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Utils;
 
-namespace UserDBService.Source.Service;
+namespace UserDBService.Sources.Services;
 
 public class DefaultUserService : IUserService
 {

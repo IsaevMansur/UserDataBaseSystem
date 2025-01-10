@@ -1,4 +1,4 @@
-﻿namespace UserDBService.Source.Util;
+﻿namespace UserDBService.Sources.Utils;
 
 public static class ValidationHelper
 {

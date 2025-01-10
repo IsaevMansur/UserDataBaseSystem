@@ -1,4 +1,4 @@
-﻿namespace UserDBService.Source.Interface;
+﻿namespace UserDBService.Sources.Interfaces;
 
 public interface IUser
 {

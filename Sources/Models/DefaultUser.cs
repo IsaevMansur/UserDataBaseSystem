@@ -1,6 +1,6 @@
-﻿using UserDBService.Source.Interface;
+﻿using UserDBService.Sources.Interfaces;
 
-namespace UserDBService.Source.Models;
+namespace UserDBService.Sources.Models;
 
 public class DefaultUser : IUser
 {

@@ -18,9 +18,6 @@ public static class ValidationHelper
     public static bool IsValidNumber(string phoneNumber) =>
         !string.IsNullOrEmpty(phoneNumber) && phoneNumber.All(char.IsDigit) && phoneNumber.Length == 10;
 
-    public static bool IsValidCommands(string[] commands) =>
-        !commands.Any(string.IsNullOrEmpty) && CommandHelp.CommandsList.TryGetValue(commands[0], out _);
-
     public static bool IsValidName(string name) =>
         !string.IsNullOrEmpty(name) && name.Length >= 2 && !name.All(char.IsDigit);
 }

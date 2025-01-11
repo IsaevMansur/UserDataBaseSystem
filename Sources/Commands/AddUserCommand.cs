@@ -3,7 +3,7 @@ using UserDBService.Sources.Interfaces.Service;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Utils;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
 public class AddUserCommand : IUserCommand
 {
@@ -22,10 +22,25 @@ public class AddUserCommand : IUserCommand
             return;
         }
 
-        if (!ValidationHelper.IsValidNumber(args[2]) && !ValidationHelper.IsValidEmail(args[3]))
+        if (!ValidationHelper.IsValidName(args[0]))
         {
-            Console.WriteLine("Invalid email format or email address");
+            Console.WriteLine("The first name must contain at least 2 letters.");
+        }
+
+        if (!ValidationHelper.IsValidName(args[1]))
+        {
+            Console.WriteLine("The last name must contain at least 2 letters.");
+        }
+
+        if (!ValidationHelper.IsValidEmail(args[3]))
+        {
+            Console.WriteLine($"Invalid email format, example: {ValidationHelper.EmailSample}");
             return;
+        }
+
+        if (!ValidationHelper.IsValidNumber(args[2]))
+        {
+            Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneNumberSample}");
         }
 
         var user = new UserModel(args[0], args[1], args[2], args[3]);

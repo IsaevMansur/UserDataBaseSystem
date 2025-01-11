@@ -25,11 +25,13 @@ public class AddUserCommand : IUserCommand
         if (!ValidationHelper.IsValidName(args[0]))
         {
             Console.WriteLine("The first name must contain at least 2 letters.");
+            return;
         }
 
         if (!ValidationHelper.IsValidName(args[1]))
         {
             Console.WriteLine("The last name must contain at least 2 letters.");
+            return;
         }
 
         if (!ValidationHelper.IsValidEmail(args[3]))
@@ -41,6 +43,7 @@ public class AddUserCommand : IUserCommand
         if (!ValidationHelper.IsValidNumber(args[2]))
         {
             Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneNumberSample}");
+            return;
         }
 
         var user = new UserModel(args[0], args[1], args[2], args[3]);

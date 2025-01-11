@@ -1,6 +1,6 @@
 ﻿namespace UserDBService.Sources.Utils;
 
-public struct CommandHelp
+public struct CommandHelpListUtil
 {
     public static readonly Dictionary<string, string> CommandsList = new()
     {

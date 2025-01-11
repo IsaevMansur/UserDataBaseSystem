@@ -1,20 +1,20 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Interfaces.Service;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
-public class DeleteUserCommand : IUserCommand
+public class UserCommandDelete : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public DeleteUserCommand(IUserService userService)
+    public UserCommandDelete(IUserService userService)
     {
         _userService = userService;
     }
 
     public void Execute(string[] args)
     {
-        if (args.Length < 1 || !int.TryParse(args[0], out int userId))
+        if (args.Length > 1 || !int.TryParse(args[0], out int userId))
         {
             Console.WriteLine("Usage: delete user <UserId>");
             return;

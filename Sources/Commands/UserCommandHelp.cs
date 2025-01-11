@@ -1,9 +1,9 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Utils;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
-public class HelpUserCommand : IUserCommand
+public class UserCommandHelp : IUserCommand
 {
     public void Execute(string[] args)
     {
@@ -13,7 +13,7 @@ public class HelpUserCommand : IUserCommand
             return;
         }
 
-        foreach (var pair in CommandHelp.CommandsList)
+        foreach (var pair in CommandHelpListUtil.CommandsList)
         {
             Console.WriteLine(pair.Key + ": " + pair.Value);
         }

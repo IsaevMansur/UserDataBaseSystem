@@ -5,11 +5,11 @@ using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class AddUserCommand : IUserCommand
+public class UserCommandAdd : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public AddUserCommand(IUserService userService)
+    public UserCommandAdd(IUserService userService)
     {
         _userService = userService;
     }
@@ -22,27 +22,27 @@ public class AddUserCommand : IUserCommand
             return;
         }
 
-        if (!ValidationHelper.IsValidName(args[0]))
+        if (!ValidationHelperUtil.IsValidName(args[0]))
         {
             Console.WriteLine("The first name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelper.IsValidName(args[1]))
+        if (!ValidationHelperUtil.IsValidName(args[1]))
         {
             Console.WriteLine("The last name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelper.IsValidEmail(args[3]))
+        if (!ValidationHelperUtil.IsValidEmail(args[3]))
         {
-            Console.WriteLine($"Invalid email format, example: {ValidationHelper.EmailSample}");
+            Console.WriteLine($"Invalid email format, example: {ValidationHelperUtil.EmailSample}");
             return;
         }
 
-        if (!ValidationHelper.IsValidNumber(args[2]))
+        if (!ValidationHelperUtil.IsValidNumber(args[2]))
         {
-            Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneNumberSample}");
+            Console.WriteLine($"Invalid number format, example: {ValidationHelperUtil.PhoneNumberSample}");
             return;
         }
 

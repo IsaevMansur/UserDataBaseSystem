@@ -13,11 +13,11 @@ public class UserService : IUserService
     {
         ArgumentNullException.ThrowIfNull(userModel);
 
-        if (!ValidationHelper.IsValidEmail(userModel.Email))
-            throw new ArgumentException($"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
-        if (!ValidationHelper.IsValidNumber(userModel.PhoneNumber))
+        if (!ValidationHelperUtil.IsValidEmail(userModel.Email))
+            throw new ArgumentException($"Email is not valid:{userModel.Email} sample: {ValidationHelperUtil.EmailSample}.");
+        if (!ValidationHelperUtil.IsValidNumber(userModel.PhoneNumber))
             throw new ArgumentException(
-                $"Phone is not valid:{userModel.PhoneNumber} sample: {ValidationHelper.PhoneNumberSample}.");
+                $"Phone is not valid:{userModel.PhoneNumber} sample: {ValidationHelperUtil.PhoneNumberSample}.");
 
         userModel.Id = _currentUserId++;
         _users.Add(userModel);

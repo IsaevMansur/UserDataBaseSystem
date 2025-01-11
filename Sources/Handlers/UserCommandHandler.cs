@@ -1,5 +1,4 @@
-﻿using UserDBService.Sources.Command;
-using UserDBService.Sources.Commands;
+﻿using UserDBService.Sources.Commands;
 using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Services;
 
@@ -11,12 +10,12 @@ public class UserCommandHandler
 
     private readonly Dictionary<string, IUserCommand> _commands = new()
     {
-        { "help", new HelpUserCommand() },
-        { "new", new AddUserCommand(UserService) },
-        { "delete", new DeleteUserCommand(UserService) },
-        { "update", new UpdateUserCommand(UserService) },
-        { "get", new GetUserCommand(UserService) },
-        { "list", new ListUserCommand(UserService) }
+        { "help", new UserCommandHelp() },
+        { "new", new UserCommandAdd(UserService) },
+        { "delete", new UserCommandDelete(UserService) },
+        { "update", new UserCommandUpdate(UserService) },
+        { "get", new UserCommandGet(UserService) },
+        { "list", new UserCommandList(UserService) }
     };
 
     public void ProcessCommand(string input)

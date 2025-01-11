@@ -1,7 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
 public class DeleteUserCommand : IUserCommand
 {

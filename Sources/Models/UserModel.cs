@@ -1,4 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.User;
+﻿using UserDBService.Sources.Interfaces;
 
 namespace UserDBService.Sources.Models;
 

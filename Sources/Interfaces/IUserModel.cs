@@ -1,4 +1,4 @@
-﻿namespace UserDBService.Sources.Interfaces.User;
+﻿namespace UserDBService.Sources.Interfaces;
 
 public interface IUserModel
 {

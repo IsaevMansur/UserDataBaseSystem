@@ -1,5 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.Service;
-using UserDBService.Sources.Interfaces.User;
+﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Services;

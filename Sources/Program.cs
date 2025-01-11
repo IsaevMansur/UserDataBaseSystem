@@ -7,9 +7,7 @@ while (true)
 {
     Console.Write("> ");
     var input = Console.ReadLine();
-    if (input == null) break;
-    var commands = input.Split(' ');
-    if (commands[0] == "exit") break;
+    if (input is null or "exit") break;
 
     handler.ProcessCommand(input);
 }

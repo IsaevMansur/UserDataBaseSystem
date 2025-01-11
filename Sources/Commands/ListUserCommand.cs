@@ -1,8 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
-using UserDBService.Sources.Interfaces.User;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
 public class ListUserCommand : IUserCommand
 {

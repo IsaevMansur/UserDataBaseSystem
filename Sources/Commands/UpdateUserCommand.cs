@@ -1,8 +1,7 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 using UserDBService.Sources.Models;
 
-namespace UserDBService.Sources.Command;
+namespace UserDBService.Sources.Commands;
 
 public class UpdateUserCommand : IUserCommand
 {

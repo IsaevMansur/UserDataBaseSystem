@@ -1,6 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.User;
-
-namespace UserDBService.Sources.Interfaces.Service;
+﻿namespace UserDBService.Sources.Interfaces;
 
 public interface IUserService
 {

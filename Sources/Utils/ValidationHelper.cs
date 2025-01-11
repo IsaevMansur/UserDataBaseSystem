@@ -1,10 +1,26 @@
-﻿namespace UserDBService.Sources.Utils;
+﻿using System.Text.RegularExpressions;
+
+namespace UserDBService.Sources.Utils;
 
 public static class ValidationHelper
 {
-    public static bool IsValidEmail(string email) =>
-        !string.IsNullOrEmpty(email) && email.Contains('@');
+    public const string EmailSample = "example@gmail.com";
+    public const string PhoneNumberSample = "89122123456";
 
-    public static bool IsValidPhoneNumber(string phoneNumber) =>
-        !string.IsNullOrEmpty(phoneNumber) && phoneNumber.All(char.IsDigit);
+    private static readonly Regex EmailRegex = new(
+        @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    public static bool IsValidEmail(string email) =>
+        !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
+
+
+    public static bool IsValidNumber(string phoneNumber) =>
+        !string.IsNullOrEmpty(phoneNumber) && phoneNumber.All(char.IsDigit) && phoneNumber.Length == 10;
+
+    public static bool IsValidCommands(string[] commands) =>
+        !commands.Any(string.IsNullOrEmpty) && CommandHelp.CommandsList.TryGetValue(commands[0], out _);
+
+    public static bool IsValidName(string name) =>
+        !string.IsNullOrEmpty(name) && name.Length >= 2 && !name.All(char.IsDigit);
 }

@@ -1,9 +1,15 @@
-﻿namespace UserDBService;
+﻿using UserDBService.Sources.Handlers;
 
-abstract class Program
+UserCommandHandler handler = new UserCommandHandler();
+
+Console.WriteLine("Type a command or 'exit' to quit.");
+while (true)
 {
-    private static void Main(string[] args)
-    {
-        Console.WriteLine("Hello, World!");
-    }
+    Console.Write("> ");
+    var input = Console.ReadLine();
+    if (input == null) break;
+    var commands = input.Split(' ');
+    if (commands[0] == "exit") break;
+
+    handler.ProcessCommand(input);
 }

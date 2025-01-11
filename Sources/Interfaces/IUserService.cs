@@ -1,10 +1,12 @@
-﻿namespace UserDBService.Sources.Interfaces;
+﻿using UserDBService.Sources.Interfaces.User;
+
+namespace UserDBService.Sources.Interfaces.Service;
 
 public interface IUserService
 {
-    public void AddUser(IUser user);
-    public IUser GetUser(int id);
-    public IEnumerable<IUser> GetAllUsers();
-    public void UpdateUser(int id, IUser user);
+    public void AddUser(IUserModel userModel);
+    public IUserModel GetUser(int id);
+    public IEnumerable<IUserModel> GetAllUsers();
+    public void UpdateUser(int id, IUserModel userModel);
     public void DeleteUser(int id);
 }

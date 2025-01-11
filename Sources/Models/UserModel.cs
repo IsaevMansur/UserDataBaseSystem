@@ -1,18 +1,22 @@
-﻿using UserDBService.Sources.Interfaces;
+﻿using UserDBService.Sources.Interfaces.User;
 
 namespace UserDBService.Sources.Models;
 
-public class DefaultUser : IUser
+public class UserModel : IUserModel
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
 
-    public DefaultUser(string firstName, string lastName, string phoneNumber, string email)
+    public override string ToString()
     {
-        Id = 1;
+        return $"{Id}\t\t{LastName}\t\t{Email}";
+    }
+
+    public UserModel(string firstName, string lastName, string phoneNumber, string email)
+    {
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;

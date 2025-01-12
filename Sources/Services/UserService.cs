@@ -13,7 +13,8 @@ public class UserService : IUserService
         ArgumentNullException.ThrowIfNull(userModel);
 
         if (!ValidationHelper.IsValidEmail(userModel.Email))
-            throw new ArgumentException($"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
+            throw new ArgumentException(
+                $"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
         if (!ValidationHelper.IsValidNumber(userModel.Phone))
             throw new ArgumentException(
                 $"Phone is not valid:{userModel.Phone} sample: {ValidationHelper.PhoneSample}.");
@@ -24,8 +25,22 @@ public class UserService : IUserService
 
     public IUserModel GetUser(int id)
     {
-        return _users.FirstOrDefault(u => u.Id == id)
-               ?? throw new KeyNotFoundException($"User with Id: {id} not found.");
+        int start = 0;
+        int end = _users.Count - 1;
+        IUserModel? target = null;
+
+        while (start <= end)
+        {
+            int mid = (start + end) / 2;
+            if (_users[mid].Id == id)
+                target = _users[mid];
+            if (_users[mid].Id > id)
+                end = mid - 1;
+            else
+                start = mid + 1;
+        }
+
+        return target ?? throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
 
     public IEnumerable<IUserModel> GetAllUsers()
@@ -50,9 +65,23 @@ public class UserService : IUserService
         _users.Remove(user);
     }
 
-    public bool TryGetUserById(int userId, out IUserModel? user)
+    public bool TryGetUserById(int id, out IUserModel? user)
     {
-        user = _users.FirstOrDefault(u => u.Id == userId);
-        return user != null;
+        int start = 0;
+        int end = _users.Count - 1;
+        user = null;
+
+        while (start <= end)
+        {
+            int mid = (start + end) / 2;
+            if (_users[mid].Id == id)
+                user = _users[mid];
+            if (_users[mid].Id > id)
+                end = mid - 1;
+            else
+                start = mid + 1;
+        }
+
+        return user == null;
     }
 }

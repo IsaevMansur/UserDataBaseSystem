@@ -7,12 +7,6 @@ public class HelpUserCommand : IUserCommand
 {
     public void Execute(string[] args)
     {
-        if (args.Length > 1)
-        {
-            Console.WriteLine("This command does not need arguments.");
-            return;
-        }
-
         foreach (var pair in CommandHelpList.CommandsList)
         {
             Console.WriteLine(pair.Key + ": " + pair.Value);

@@ -1,7 +1,6 @@
 ﻿using UserDBService.Sources.Commands;
 using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Services;
-using UserDBService.Sources.Commands;
 
 namespace UserDBService.Sources.Handlers;
 

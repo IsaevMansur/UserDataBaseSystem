@@ -1,13 +1,12 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 
 namespace UserDBService.Sources.Commands;
 
-public class UserCommandDelete : IUserCommand
+public class DeleteUserCommand : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public UserCommandDelete(IUserService userService)
+    public DeleteUserCommand(IUserService userService)
     {
         _userService = userService;
     }
@@ -20,14 +19,14 @@ public class UserCommandDelete : IUserCommand
             return;
         }
 
-        try
+        if (_userService.TryGetUserById(userId, out _))
         {
             _userService.DeleteUser(userId);
             Console.WriteLine($"User with Id {userId} deleted successfully.");
         }
-        catch (KeyNotFoundException ex)
+        else
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine($"User with Id {userId} not found.");
         }
     }
 }

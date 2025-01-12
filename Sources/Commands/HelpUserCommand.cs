@@ -3,7 +3,7 @@ using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class UserCommandHelp : IUserCommand
+public class HelpUserCommand : IUserCommand
 {
     public void Execute(string[] args)
     {
@@ -13,7 +13,7 @@ public class UserCommandHelp : IUserCommand
             return;
         }
 
-        foreach (var pair in CommandHelpListUtil.CommandsList)
+        foreach (var pair in CommandHelpList.CommandsList)
         {
             Console.WriteLine(pair.Key + ": " + pair.Value);
         }

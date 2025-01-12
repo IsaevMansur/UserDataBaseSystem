@@ -1,14 +1,13 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 using UserDBService.Sources.Services;
 
 namespace UserDBService.Sources.Commands;
 
-public class UserCommandGet : IUserCommand
+public class GetUserCommand : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public UserCommandGet(UserService userService)
+    public GetUserCommand(UserService userService)
     {
         _userService = userService;
     }

@@ -1,15 +1,14 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class UserCommandAdd : IUserCommand
+public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public UserCommandAdd(IUserService userService)
+    public AddUserCommand(IUserService userService)
     {
         _userService = userService;
     }
@@ -18,35 +17,40 @@ public class UserCommandAdd : IUserCommand
     {
         if (args.Length < 4)
         {
-            Console.WriteLine("Usage: add user <FirstName> <LastName> <PhoneNumber> <Email>");
+            Console.WriteLine("Usage: add user <FirstName> <LastName> <Phone> <Email>");
             return;
         }
 
-        if (!ValidationHelperUtil.IsValidName(args[0]))
+        string firstName = args[0];
+        string lastName = args[1];
+        string phone = args[2];
+        string email = args[3];
+
+        if (!ValidationHelper.IsValidName(firstName))
         {
             Console.WriteLine("The first name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelperUtil.IsValidName(args[1]))
+        if (!ValidationHelper.IsValidName(lastName))
         {
             Console.WriteLine("The last name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelperUtil.IsValidEmail(args[3]))
+        if (!ValidationHelper.IsValidEmail(phone))
         {
-            Console.WriteLine($"Invalid email format, example: {ValidationHelperUtil.EmailSample}");
+            Console.WriteLine($"Invalid email format, example: {ValidationHelper.EmailSample}");
             return;
         }
 
-        if (!ValidationHelperUtil.IsValidNumber(args[2]))
+        if (!ValidationHelper.IsValidNumber(email))
         {
-            Console.WriteLine($"Invalid number format, example: {ValidationHelperUtil.PhoneNumberSample}");
+            Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneSample}");
             return;
         }
 
-        var user = new UserModel(args[0], args[1], args[2], args[3]);
+        var user = new UserModel(firstName, lastName, phone, email);
 
         _userService.AddUser(user);
         Console.WriteLine($"User {user.FirstName} {user.LastName} added successfully.");

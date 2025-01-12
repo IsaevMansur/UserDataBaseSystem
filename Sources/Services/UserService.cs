@@ -1,5 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.Service;
-using UserDBService.Sources.Interfaces.User;
+﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Services;
@@ -13,11 +12,11 @@ public class UserService : IUserService
     {
         ArgumentNullException.ThrowIfNull(userModel);
 
-        if (!ValidationHelperUtil.IsValidEmail(userModel.Email))
-            throw new ArgumentException($"Email is not valid:{userModel.Email} sample: {ValidationHelperUtil.EmailSample}.");
-        if (!ValidationHelperUtil.IsValidNumber(userModel.PhoneNumber))
+        if (!ValidationHelper.IsValidEmail(userModel.Email))
+            throw new ArgumentException($"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
+        if (!ValidationHelper.IsValidNumber(userModel.Phone))
             throw new ArgumentException(
-                $"Phone is not valid:{userModel.PhoneNumber} sample: {ValidationHelperUtil.PhoneNumberSample}.");
+                $"Phone is not valid:{userModel.Phone} sample: {ValidationHelper.PhoneSample}.");
 
         userModel.Id = _currentUserId++;
         _users.Add(userModel);
@@ -42,7 +41,7 @@ public class UserService : IUserService
         user.FirstName = updatedUserModel.FirstName;
         user.LastName = updatedUserModel.LastName;
         user.Email = updatedUserModel.Email;
-        user.PhoneNumber = updatedUserModel.PhoneNumber;
+        user.Phone = updatedUserModel.Phone;
     }
 
     public void DeleteUser(int id)

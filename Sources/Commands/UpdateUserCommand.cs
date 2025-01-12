@@ -1,14 +1,13 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Interfaces.Service;
 using UserDBService.Sources.Models;
 
 namespace UserDBService.Sources.Commands;
 
-public class UserCommandUpdate : IUserCommand
+public class UpdateUserCommand : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public UserCommandUpdate(IUserService userService)
+    public UpdateUserCommand(IUserService userService)
     {
         _userService = userService;
     }
@@ -17,7 +16,7 @@ public class UserCommandUpdate : IUserCommand
     {
         if (args.Length < 5)
         {
-            Console.WriteLine("Needs arguments: <Id> <FirstName> <LastName> <PhoneNumber> <Email>");
+            Console.WriteLine("Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>");
             return;
         }
 

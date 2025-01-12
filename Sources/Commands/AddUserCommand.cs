@@ -17,35 +17,40 @@ public class AddUserCommand : IUserCommand
     {
         if (args.Length < 4)
         {
-            Console.WriteLine("Usage: add user <FirstName> <LastName> <PhoneNumber> <Email>");
+            Console.WriteLine("Usage: add user <FirstName> <LastName> <Phone> <Email>");
             return;
         }
 
-        if (!ValidationHelper.IsValidName(args[0]))
+        string firstName = args[0];
+        string lastName = args[1];
+        string phone = args[2];
+        string email = args[3];
+
+        if (!ValidationHelper.IsValidName(firstName))
         {
             Console.WriteLine("The first name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelper.IsValidName(args[1]))
+        if (!ValidationHelper.IsValidName(lastName))
         {
             Console.WriteLine("The last name must contain at least 2 letters.");
             return;
         }
 
-        if (!ValidationHelper.IsValidEmail(args[3]))
+        if (!ValidationHelper.IsValidEmail(phone))
         {
             Console.WriteLine($"Invalid email format, example: {ValidationHelper.EmailSample}");
             return;
         }
 
-        if (!ValidationHelper.IsValidNumber(args[2]))
+        if (!ValidationHelper.IsValidNumber(email))
         {
-            Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneNumberSample}");
+            Console.WriteLine($"Invalid number format, example: {ValidationHelper.PhoneSample}");
             return;
         }
 
-        var user = new UserModel(args[0], args[1], args[2], args[3]);
+        var user = new UserModel(firstName, lastName, phone, email);
 
         _userService.AddUser(user);
         Console.WriteLine($"User {user.FirstName} {user.LastName} added successfully.");

@@ -15,9 +15,9 @@ public class UserService : IUserService
         if (!ValidationHelper.IsValidEmail(userModel.Email))
             throw new ArgumentException(
                 $"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
-        if (!ValidationHelper.IsValidNumber(userModel.PhoneNumber))
+        if (!ValidationHelper.IsValidNumber(userModel.Phone))
             throw new ArgumentException(
-                $"Phone is not valid:{userModel.PhoneNumber} sample: {ValidationHelper.PhoneNumberSample}.");
+                $"Phone is not valid:{userModel.Phone} sample: {ValidationHelper.PhoneSample}.");
 
         userModel.Id = _currentUserId++;
         _users.Add(userModel);
@@ -56,7 +56,7 @@ public class UserService : IUserService
         user.FirstName = updatedUserModel.FirstName;
         user.LastName = updatedUserModel.LastName;
         user.Email = updatedUserModel.Email;
-        user.PhoneNumber = updatedUserModel.PhoneNumber;
+        user.Phone = updatedUserModel.Phone;
     }
 
     public void DeleteUser(int id)
@@ -65,9 +65,23 @@ public class UserService : IUserService
         _users.Remove(user);
     }
 
-    public bool TryGetUserById(int userId, out IUserModel? user)
+    public bool TryGetUserById(int id, out IUserModel? user)
     {
-        user = _users.FirstOrDefault(u => u.Id == userId);
+        int start = 0;
+        int end = _users.Count - 1;
+        user = null;
+
+        while (start <= end)
+        {
+            int mid = (start + end) / 2;
+            if (_users[mid].Id == id)
+                user = _users[mid];
+            if (_users[mid].Id > id)
+                end = mid - 1;
+            else
+                start = mid + 1;
+        }
+
         return user != null;
     }
 }

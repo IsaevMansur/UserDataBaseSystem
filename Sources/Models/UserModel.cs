@@ -7,7 +7,7 @@ public class UserModel : IUserModel
     public long Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string PhoneNumber { get; set; }
+    public string Phone { get; set; }
     public string Email { get; set; }
 
     public override string ToString()
@@ -15,11 +15,11 @@ public class UserModel : IUserModel
         return $"{Id}\t\t{LastName}\t\t{Email}";
     }
 
-    public UserModel(string firstName, string lastName, string phoneNumber, string email)
+    public UserModel(string firstName, string lastName, string phone, string email)
     {
         FirstName = firstName;
         LastName = lastName;
-        PhoneNumber = phoneNumber;
+        Phone = phone;
         Email = email;
     }
 }

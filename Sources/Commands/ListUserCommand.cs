@@ -13,12 +13,6 @@ public class ListUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (args.Length != 0)
-        {
-            Console.WriteLine("This command does not need arguments.");
-            return;
-        }
-
         var userList = _userService.GetAllUsers();
         Console.WriteLine("Users list:");
         Console.WriteLine("Id\t\tLastName\t\tEmail");

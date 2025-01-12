@@ -19,14 +19,14 @@ public class DeleteUserCommand : IUserCommand
             return;
         }
 
-        try
+        if (_userService.TryGetUserById(userId, out _))
         {
             _userService.DeleteUser(userId);
             Console.WriteLine($"User with Id {userId} deleted successfully.");
         }
-        catch (KeyNotFoundException ex)
+        else
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine($"User with Id {userId} not found.");
         }
     }
 }

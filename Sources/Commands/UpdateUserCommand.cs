@@ -16,7 +16,7 @@ public class UpdateUserCommand : IUserCommand
     {
         if (args.Length < 5)
         {
-            Console.WriteLine("Needs arguments: <Id> <FirstName> <LastName> <PhoneNumber> <Email>");
+            Console.WriteLine("Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>");
             return;
         }
 

@@ -7,4 +7,5 @@ public interface IUserService
     public IEnumerable<IUserModel> GetAllUsers();
     public void UpdateUser(int id, IUserModel userModel);
     public void DeleteUser(int id);
+    public bool TryGetUserById(int id, out IUserModel? user);
 }

@@ -14,6 +14,12 @@ public class ListUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
+        if (_userService.Count == 0)
+        {
+            Console.WriteLine("Base is empty");
+            return;
+        }
+
         var userList = _userService.GetAllUsers();
 
         var table = new ConsoleTable("Id", "LastName", "Email");

@@ -15,9 +15,16 @@ public class UserService : IUserService
     {
         ArgumentNullException.ThrowIfNull(userModel);
 
+        if (!ValidationHelper.IsValidName(userModel.FirstName))
+            throw new ArgumentException("The first name must contain at least 2 letters.");
+
+        if (!ValidationHelper.IsValidName(userModel.LastName))
+            throw new ArgumentException("The last name must contain at least 2 letters.");
+
         if (!ValidationHelper.IsValidEmail(userModel.Email))
             throw new ArgumentException(
                 $"Email is not valid:{userModel.Email} sample: {ValidationHelper.EmailSample}.");
+
         if (!ValidationHelper.IsValidNumber(userModel.Phone))
             throw new ArgumentException(
                 $"Phone is not valid:{userModel.Phone} sample: {ValidationHelper.PhoneSample}.");

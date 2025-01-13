@@ -1,5 +1,4 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Services;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
@@ -8,7 +7,7 @@ public class GetUserCommand : IUserCommand
 {
     private readonly IUserService _userService;
 
-    public GetUserCommand(UserService userService)
+    public GetUserCommand(IUserService userService)
     {
         _userService = userService;
     }

@@ -20,4 +20,7 @@ public static class ValidationHelper
 
     public static bool IsValidName(string name) =>
         !string.IsNullOrEmpty(name) && name.Length >= 2 && name.All(char.IsLetter);
+
+    public static bool IsValidId(string id) =>
+        !string.IsNullOrEmpty(id) && id.All(char.IsDigit);
 }

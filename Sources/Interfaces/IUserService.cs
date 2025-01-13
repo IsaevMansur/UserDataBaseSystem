@@ -3,9 +3,9 @@
 public interface IUserService
 {
     public void AddUser(IUserModel userModel);
-    public IUserModel GetUser(int id);
+    public IUserModel GetUser(long id);
     public IEnumerable<IUserModel> GetAllUsers();
-    public void UpdateUser(int id, IUserModel userModel);
-    public void DeleteUser(int id);
-    public bool TryGetUserById(int id, out IUserModel? user);
+    public void UpdateUser(long id, IUserModel userModel);
+    public void DeleteUser(long id);
+    public bool TryGetUserById(long id, out IUserModel? user);
 }

@@ -1,4 +1,5 @@
-﻿using UserDBService.Sources.Interfaces;
+﻿using System.Runtime.CompilerServices;
+using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Services;
@@ -6,7 +7,7 @@ namespace UserDBService.Sources.Services;
 public class UserService : IUserService
 {
     private readonly List<IUserModel> _users = [];
-    private int _currentUserId = 1;
+    private long _currentUserId = 1;
 
     public void AddUser(IUserModel userModel)
     {
@@ -23,35 +24,42 @@ public class UserService : IUserService
         _users.Add(userModel);
     }
 
-    public IUserModel GetUser(int id)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IUserModel GetUser(long id)
     {
         int start = 0;
         int end = _users.Count - 1;
-        IUserModel? target = null;
 
         while (start <= end)
         {
             int mid = (start + end) / 2;
-            if (_users[mid].Id == id)
-                target = _users[mid];
-            if (_users[mid].Id > id)
+            var currentUser = _users[mid];
+
+            if (currentUser.Id == id)
+                return currentUser;
+
+            if (currentUser.Id > id)
                 end = mid - 1;
             else
                 start = mid + 1;
         }
 
-        return target ?? throw new KeyNotFoundException($"User with Id: {id} not found.");
+        throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
+
 
     public IEnumerable<IUserModel> GetAllUsers()
     {
         return _users;
     }
 
-    public void UpdateUser(int id, IUserModel updatedUserModel)
+    public void UpdateUser(long id, IUserModel updatedUserModel)
     {
         ArgumentNullException.ThrowIfNull(updatedUserModel);
-        var user = GetUser(id);
+        TryGetUserById(id, out var user);
+
+        if (user == null)
+            throw new KeyNotFoundException($"User with Id: {id} not found.");
 
         user.FirstName = updatedUserModel.FirstName;
         user.LastName = updatedUserModel.LastName;
@@ -59,13 +67,32 @@ public class UserService : IUserService
         user.Phone = updatedUserModel.Phone;
     }
 
-    public void DeleteUser(int id)
+    public void DeleteUser(long id)
     {
-        var user = GetUser(id);
-        _users.Remove(user);
+        int start = 0;
+        int end = _users.Count - 1;
+
+        while (start <= end)
+        {
+            int mid = (start + end) / 2;
+            var currentUser = _users[mid];
+
+            if (currentUser.Id == id)
+            {
+                _users.RemoveAt(mid);
+                return;
+            }
+
+            if (currentUser.Id > id)
+                end = mid - 1;
+            else
+                start = mid + 1;
+        }
+
+        throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
 
-    public bool TryGetUserById(int id, out IUserModel? user)
+    public bool TryGetUserById(long id, out IUserModel? user)
     {
         int start = 0;
         int end = _users.Count - 1;
@@ -74,14 +101,20 @@ public class UserService : IUserService
         while (start <= end)
         {
             int mid = (start + end) / 2;
-            if (_users[mid].Id == id)
-                user = _users[mid];
-            if (_users[mid].Id > id)
+            var currentUser = _users[mid];
+
+            if (currentUser.Id == id)
+            {
+                user = currentUser;
+                return true;
+            }
+
+            if (currentUser.Id > id)
                 end = mid - 1;
             else
                 start = mid + 1;
         }
 
-        return user == null;
+        return false;
     }
 }

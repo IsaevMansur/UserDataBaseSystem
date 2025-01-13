@@ -13,20 +13,31 @@ public class DeleteUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (args.Length > 1 || !int.TryParse(args[0], out int userId))
+        if (!IsValidArgs(args, out int userId))
         {
-            Console.WriteLine("Usage: delete user <UserId>");
+            Console.WriteLine($"Usage: delete-user {userId}");
             return;
         }
 
-        if (_userService.TryGetUserById(userId, out _))
+        try
         {
             _userService.DeleteUser(userId);
             Console.WriteLine($"User with Id {userId} deleted successfully.");
         }
-        else
+        catch (KeyNotFoundException)
         {
             Console.WriteLine($"User with Id {userId} not found.");
         }
+    }
+
+    private static bool IsValidArgs(string[] args, out int userId)
+    {
+        if (args.Length != 1 || !int.TryParse(args[0], out userId))
+        {
+            userId = default;
+            return false;
+        }
+
+        return true;
     }
 }

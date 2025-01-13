@@ -14,15 +14,33 @@ public class GetUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (args.Length < 1)
+        if (!IsValidArgs(args))
         {
             Console.WriteLine("Usage: get <Id>");
             return;
         }
 
         int userId = int.Parse(args[0]);
-        var user = _userService.GetUser(userId);
-        Console.WriteLine("Id\t\tName\t\tEmail");
-        Console.WriteLine(user.ToString());
+        _userService.TryGetUserById(userId, out var user);
+        if (user != null)
+        {
+            Console.WriteLine("Id\t\tName\t\tEmail");
+            Console.WriteLine(user.ToString());
+        }
+        else
+        {
+            Console.WriteLine("Id not found");
+        }
+    }
+
+    private static bool IsValidArgs(string[] args)
+    {
+        if (args.Length != 1 && !args[0].All(char.IsDigit))
+        {
+            Console.WriteLine("Usage: get <Id>");
+            return false;
+        }
+
+        return true;
     }
 }

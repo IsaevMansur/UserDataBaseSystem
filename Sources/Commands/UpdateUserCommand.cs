@@ -15,9 +15,9 @@ public class UpdateUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (args.Length != 5 && args[0].All(char.IsDigit))
+        if (!ArgsValidationHelper.IsValidArgs(args, 5, "Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>") ||
+            args[0].All(char.IsDigit))
         {
-            Console.WriteLine("Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>");
             return;
         }
 

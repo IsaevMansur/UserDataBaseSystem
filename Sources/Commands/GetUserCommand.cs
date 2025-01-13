@@ -1,5 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Services;
+using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
@@ -14,9 +15,8 @@ public class GetUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!IsValidArgs(args))
+        if (!ArgsValidationHelper.IsValidArgs(args, 1, "Usage: get <Id>") || !args[0].All(char.IsDigit))
         {
-            Console.WriteLine("Usage: get <Id>");
             return;
         }
 
@@ -31,16 +31,5 @@ public class GetUserCommand : IUserCommand
         {
             Console.WriteLine("Id not found");
         }
-    }
-
-    private static bool IsValidArgs(string[] args)
-    {
-        if (args.Length != 1 && !args[0].All(char.IsDigit))
-        {
-            Console.WriteLine("Usage: get <Id>");
-            return false;
-        }
-
-        return true;
     }
 }

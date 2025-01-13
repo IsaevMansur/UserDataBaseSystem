@@ -1,4 +1,5 @@
 ﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
@@ -13,9 +14,9 @@ public class DeleteUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!IsValidArgs(args, out int userId))
+        if (!ArgsValidationHelper.IsValidArgs(args, 1, "Usage: delete-user {userId}") ||
+            !int.TryParse(args[0], out int userId))
         {
-            Console.WriteLine($"Usage: delete-user {userId}");
             return;
         }
 
@@ -28,16 +29,5 @@ public class DeleteUserCommand : IUserCommand
         {
             Console.WriteLine($"User with Id {userId} not found.");
         }
-    }
-
-    private static bool IsValidArgs(string[] args, out int userId)
-    {
-        if (args.Length != 1 || !int.TryParse(args[0], out userId))
-        {
-            userId = default;
-            return false;
-        }
-
-        return true;
     }
 }

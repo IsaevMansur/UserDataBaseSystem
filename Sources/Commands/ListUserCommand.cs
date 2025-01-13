@@ -1,4 +1,5 @@
-﻿using UserDBService.Sources.Interfaces;
+﻿using ConsoleTables;
+using UserDBService.Sources.Interfaces;
 
 namespace UserDBService.Sources.Commands;
 
@@ -14,11 +15,14 @@ public class ListUserCommand : IUserCommand
     public void Execute(string[] args)
     {
         var userList = _userService.GetAllUsers();
-        Console.WriteLine("Users list:");
-        Console.WriteLine("Id\t\tLastName\t\tEmail");
-        foreach (IUserModel user in userList)
+
+        var table = new ConsoleTable("Id", "LastName", "Email");
+
+        foreach (var user in userList)
         {
-            Console.WriteLine(user.ToString());
+            table.AddRow(user.Id, user.LastName, user.Email);
         }
+
+        table.Write();
     }
 }

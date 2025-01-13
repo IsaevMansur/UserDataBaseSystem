@@ -9,6 +9,8 @@ public class UserService : IUserService
     private readonly List<IUserModel> _users = [];
     private long _currentUserId = 1;
 
+    public long Count => _users.Count;
+
     public void AddUser(IUserModel userModel)
     {
         ArgumentNullException.ThrowIfNull(userModel);
@@ -24,24 +26,13 @@ public class UserService : IUserService
         _users.Add(userModel);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IUserModel GetUser(long id)
     {
-        int start = 0;
-        int end = _users.Count - 1;
-
-        while (start <= end)
+        long? guessId = SearchUserById(id);
+        if (guessId != null)
         {
-            int mid = (start + end) / 2;
-            var currentUser = _users[mid];
-
-            if (currentUser.Id == id)
-                return currentUser;
-
-            if (currentUser.Id > id)
-                end = mid - 1;
-            else
-                start = mid + 1;
+            var user = _users[(int)guessId];
+            return user;
         }
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
@@ -69,34 +60,28 @@ public class UserService : IUserService
 
     public void DeleteUser(long id)
     {
-        int start = 0;
-        int end = _users.Count - 1;
-
-        while (start <= end)
-        {
-            int mid = (start + end) / 2;
-            var currentUser = _users[mid];
-
-            if (currentUser.Id == id)
-            {
-                _users.RemoveAt(mid);
-                return;
-            }
-
-            if (currentUser.Id > id)
-                end = mid - 1;
-            else
-                start = mid + 1;
-        }
+        long? guessedId = SearchUserById(id);
+        if (guessedId != null)
+            _users.RemoveAt((int)guessedId);
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
 
     public bool TryGetUserById(long id, out IUserModel? user)
     {
+        user = null;
+        long? guessedId = SearchUserById(id);
+        if (guessedId == null)
+            return false;
+        user = _users[(int)guessedId];
+        return true;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private long? SearchUserById(long id)
+    {
         int start = 0;
         int end = _users.Count - 1;
-        user = null;
 
         while (start <= end)
         {
@@ -105,8 +90,7 @@ public class UserService : IUserService
 
             if (currentUser.Id == id)
             {
-                user = currentUser;
-                return true;
+                return mid;
             }
 
             if (currentUser.Id > id)
@@ -115,6 +99,6 @@ public class UserService : IUserService
                 start = mid + 1;
         }
 
-        return false;
+        return null;
     }
 }

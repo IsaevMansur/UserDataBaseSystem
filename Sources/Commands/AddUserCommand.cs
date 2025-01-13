@@ -15,11 +15,9 @@ public class AddUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!IsValidArgs(args))
-        {
-            Console.WriteLine("Usage: add user <FirstName> <LastName> <Phone> <Email>");
+        if (!ArgsValidationHelper.IsValidArgs(args, 4,
+                "Usage: add user <FirstName> <LastName> <Phone> <Email>"))
             return;
-        }
 
         var userData = ExtractUserData(args);
 
@@ -35,17 +33,6 @@ public class AddUserCommand : IUserCommand
 
         _userService.AddUser(user);
         Console.WriteLine($"User {user.FirstName} {user.LastName} added successfully.");
-    }
-
-    private static bool IsValidArgs(string[] args)
-    {
-        if (args.Length != 4)
-        {
-            Console.WriteLine("Usage: add user <FirstName> <LastName> <Phone> <Email>");
-            return false;
-        }
-
-        return true;
     }
 
     private static (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)

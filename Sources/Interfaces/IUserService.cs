@@ -2,6 +2,7 @@
 
 public interface IUserService
 {
+    public long Count { get; }
     public void AddUser(IUserModel userModel);
     public IUserModel GetUser(long id);
     public IEnumerable<IUserModel> GetAllUsers();

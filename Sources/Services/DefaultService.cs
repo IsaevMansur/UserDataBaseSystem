@@ -48,7 +48,10 @@ public class DefaultService : IUserService
 
     public bool ExistsUser(long id, out IUserModel? user)
     {
-        user = _usersDatabase.Get(id);
+        user = null;
+        if (_usersDatabase.Exists(id))
+            user = _usersDatabase.Get(id);
+
         return user is not null;
     }
 }

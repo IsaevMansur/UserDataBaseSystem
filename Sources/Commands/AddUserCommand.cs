@@ -1,14 +1,12 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Models;
-using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
 public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    private readonly UserModel _user = new();
-    private (bool IsValid, string? ErrorMessage) _validationResult;
+    private string _error = string.Empty;
 
     public AddUserCommand(IUserService service)
     {
@@ -17,52 +15,34 @@ public class AddUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!ValidationUtil.IsValidArgs(args, 4,
-                "Usage: add user <FirstName> <LastName> <Phone> <Email>"))
-            return;
-
         var userData = ExtractUserData(args);
+        UserBuilder builder = new UserBuilder();
 
-        _validationResult = ValidateUserData(userData);
+        builder.SetFirstName(userData.FirstName);
+        builder.SetLastName(userData.LastName);
+        builder.SetPhone(userData.Phone);
+        builder.SetEmail(userData.Email);
 
-        if (!_validationResult.IsValid)
+        var user = builder.Build();
+        if (user.model == null)
+        {
+            _error = user.error;
             return;
+        }
 
-        _user.FirstName = userData.FirstName;
-        _user.LastName = userData.LastName;
-        _user.Phone = userData.Phone;
-        _user.Email = userData.Email;
-
-        _service.AddUser(_user);
+        _service.AddUser(user.model);
     }
 
     public override string ToString()
     {
-        return _validationResult.IsValid ? "User added successfully" : $"{_validationResult.ErrorMessage}";
+        return _error != string.Empty
+            ? $"{_error}\nUsage: add user <FirstName> <LastName> <Phone> <Email>"
+            : "User added successfully.";
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)
     {
         return (args[0], args[1], args[2], args[3]);
-    }
-
-    // ReSharper disable once MemberCanBeMadeStatic.Local
-    private (bool IsValid, string? ErrorMessage) ValidateUserData(
-        (string FirstName, string LastName, string Phone, string Email) userData)
-    {
-        if (!ValidationUtil.IsValidName(userData.FirstName))
-            return (false, "The first name must contain at least 2 letters.");
-
-        if (!ValidationUtil.IsValidName(userData.LastName))
-            return (false, "The last name must contain at least 2 letters.");
-
-        if (!ValidationUtil.IsValidNumber(userData.Phone))
-            return (false, $"Invalid number format, example: {ValidationUtil.PhoneSample}");
-
-        if (!ValidationUtil.IsValidEmail(userData.Email))
-            return (false, $"Invalid email format, example: {ValidationUtil.EmailSample}");
-
-        return (true, null);
     }
 }

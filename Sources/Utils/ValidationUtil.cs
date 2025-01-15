@@ -12,11 +12,11 @@ public static partial class ValidationUtil
     public static bool IsValidEmail(string email) =>
         !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
 
-    public static bool IsValidNumber(string phone) =>
+    public static bool IsValidPhone(string phone) =>
         !string.IsNullOrEmpty(phone) && phone.All(char.IsDigit) && phone.Length == 10;
 
     public static bool IsValidName(string name) =>
-        !string.IsNullOrEmpty(name) && name.Length >= 2 && name.All(char.IsLetter);
+        !string.IsNullOrEmpty(name) && name.Length > 1 && name.All(char.IsLetter);
 
     public static bool IsValidId(string id) =>
         !string.IsNullOrEmpty(id) && id.All(char.IsDigit);

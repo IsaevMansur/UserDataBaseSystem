@@ -14,7 +14,9 @@ public class UserRepository : IUserDb
         _userDb.Add(user.Id, user);
     }
 
-    public IUserModel? Get(long id) => _userDb.GetValueOrDefault(id);
+    public IUserModel Get(long id) => _userDb[id];
+
+    public bool Exists(long id) => _userDb.ContainsKey(id);
 
     public IEnumerable<IUserModel> GetAll() => _userDb.Values;
 

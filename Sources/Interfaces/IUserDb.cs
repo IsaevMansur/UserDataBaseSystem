@@ -8,4 +8,5 @@ public interface IUserDb
     public IEnumerable<IUserModel>? GetAll();
     public void Remove(long id);
     public void Update(long id, IUserModel user);
+    public bool Exists(long id);
 }

@@ -4,57 +4,51 @@ namespace UserDBService.Sources.Services;
 
 public class DefaultService : IUserService
 {
-    private readonly IUserDb _inMemUsersDb;
-    public long Count => _inMemUsersDb.Count;
+    private readonly IUserDb _usersDatabase;
+    public long Count => _usersDatabase.Count;
 
-    public DefaultService(IUserDb inMemUsersDb)
+    public DefaultService(IUserDb usersDatabase)
     {
-        _inMemUsersDb = inMemUsersDb;
+        _usersDatabase = usersDatabase;
     }
 
     public void AddUser(IUserModel userModel)
     {
         ArgumentNullException.ThrowIfNull(userModel);
-        _inMemUsersDb.Add(userModel);
+        _usersDatabase.Add(userModel);
     }
-
 
     public IUserModel GetUser(long id)
     {
-        UserExistsById(id, out var user);
-        if (user != null)
-            return user;
-
-        throw new KeyNotFoundException($"User with id: {id} was not found.");
+        return _usersDatabase.Get(id) ?? throw new KeyNotFoundException($"User with id: {id} was not found.");
     }
 
     public IEnumerable<IUserModel> GetAllUsers()
     {
-        return _inMemUsersDb.GetAll() ?? throw new Exception($"Database is empty.");
+        return _usersDatabase.GetAll() ?? throw new Exception($"Database is empty.");
     }
 
-    public void UpdateUser(long id, IUserModel userModel)
+    public void UpdateUser(long id, IUserModel user)
     {
-        ArgumentNullException.ThrowIfNull(userModel);
-        UserExistsById(id, out var user);
+        ArgumentNullException.ThrowIfNull(user);
 
-        if (user == null)
-            throw new KeyNotFoundException($"User with Id: {id} not found.");
-
-        _inMemUsersDb.UpdateAtId(id, user);
-    }
-
-    public void DeleteUser(long id)
-    {
-        if (UserExistsById(id, out _))
-            _inMemUsersDb.RemoveAtId(id);
+        if (ExistsUser(id, out _))
+            _usersDatabase.Update(id, user);
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
 
-    public bool UserExistsById(long id, out IUserModel? user)
+    public void DeleteUser(long id)
     {
-        user = _inMemUsersDb.GetById(id);
+        if (ExistsUser(id, out _))
+            _usersDatabase.Remove(id);
+
+        throw new KeyNotFoundException($"User with Id: {id} not found.");
+    }
+
+    public bool ExistsUser(long id, out IUserModel? user)
+    {
+        user = _usersDatabase.Get(id);
         return user is not null;
     }
 }

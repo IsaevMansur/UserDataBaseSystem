@@ -23,7 +23,7 @@ public class DeleteUserCommand : IUserCommand
             return;
         }
 
-        _isDeleted = _service.UserExistsById(_userId, out _);
+        _isDeleted = _service.ExistsUser(_userId, out _);
         if (_isDeleted) _service.DeleteUser(_userId);
     }
 

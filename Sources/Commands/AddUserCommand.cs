@@ -8,7 +8,7 @@ public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _service;
     private readonly UserModel _user = new();
-    (bool IsValid, string? ErrorMessage) validationResult;
+    private (bool IsValid, string? ErrorMessage) _validationResult;
 
     public AddUserCommand(IUserService service)
     {
@@ -23,9 +23,9 @@ public class AddUserCommand : IUserCommand
 
         var userData = ExtractUserData(args);
 
-        validationResult = ValidateUserData(userData);
+        _validationResult = ValidateUserData(userData);
 
-        if (!validationResult.IsValid)
+        if (!_validationResult.IsValid)
             return;
 
         _user.FirstName = userData.FirstName;
@@ -38,15 +38,17 @@ public class AddUserCommand : IUserCommand
 
     public override string ToString()
     {
-        return validationResult.IsValid ? "User added successfully" : $"{validationResult.ErrorMessage}";
+        return _validationResult.IsValid ? "User added successfully" : $"{_validationResult.ErrorMessage}";
     }
 
-    private static (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)
+    // ReSharper disable once MemberCanBeMadeStatic.Local
+    private (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)
     {
         return (args[0], args[1], args[2], args[3]);
     }
 
-    private static (bool IsValid, string? ErrorMessage) ValidateUserData(
+    // ReSharper disable once MemberCanBeMadeStatic.Local
+    private (bool IsValid, string? ErrorMessage) ValidateUserData(
         (string FirstName, string LastName, string Phone, string Email) userData)
     {
         if (!ValidationUtil.IsValidName(userData.FirstName))

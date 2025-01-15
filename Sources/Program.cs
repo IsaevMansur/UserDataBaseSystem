@@ -1,5 +1,5 @@
 ﻿using UserDBService.Sources.Handlers;
-using UserDBService.Sources.Repository;
+using UserDBService.Sources.Repositories;
 using UserDBService.Sources.Services;
 
 UserRepository database = new();
@@ -11,7 +11,7 @@ while (true)
 {
     Console.Write("> ");
 
-    var input = Console.ReadLine();
-    if (input is null or "exit") break;
+    var input = Console.ReadLine()?.Trim();
+    if (input is null || input.ToLower() is "exit") break;
     handler.ProcessCommand(input);
 }

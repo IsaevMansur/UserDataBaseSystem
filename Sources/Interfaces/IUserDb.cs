@@ -4,8 +4,8 @@ public interface IUserDb
 {
     public long Count { get; }
     public void Add(IUserModel user);
-    public IUserModel? GetById(long id);
+    public IUserModel? Get(long id);
     public IEnumerable<IUserModel>? GetAll();
-    public void RemoveAtId(long id);
-    public void UpdateAtId(long id, IUserModel user);
+    public void Remove(long id);
+    public void Update(long id, IUserModel user);
 }

@@ -23,7 +23,7 @@ public class GetUserCommand : IUserCommand
             return;
         }
 
-        _service.UserExistsById(id, out _user);
+        _service.ExistsUser(id, out _user);
         if (_user != null)
         {
             _table.AddRow(_user.Id, _user.LastName, _user.Email);

@@ -1,6 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
 
-namespace UserDBService.Sources.Repository;
+namespace UserDBService.Sources.Repositories;
 
 public class UserRepository : IUserDb
 {
@@ -14,11 +14,11 @@ public class UserRepository : IUserDb
         _userDb.Add(user.Id, user);
     }
 
-    public IUserModel? GetById(long id) => _userDb.GetValueOrDefault(id);
+    public IUserModel? Get(long id) => _userDb.GetValueOrDefault(id);
 
     public IEnumerable<IUserModel> GetAll() => _userDb.Values;
 
-    public void RemoveAtId(long id) => _userDb.Remove(id);
+    public void Remove(long id) => _userDb.Remove(id);
 
-    public void UpdateAtId(long id, IUserModel user) => _userDb[id] = user;
+    public void Update(long id, IUserModel user) => _userDb[id] = user;
 }

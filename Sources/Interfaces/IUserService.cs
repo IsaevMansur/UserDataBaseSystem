@@ -6,7 +6,7 @@ public interface IUserService
     public void AddUser(IUserModel userModel);
     public IUserModel GetUser(long id);
     public IEnumerable<IUserModel>? GetAllUsers();
-    public void UpdateUser(long id, IUserModel userModel);
+    public void UpdateUser(long id, IUserModel user);
     public void DeleteUser(long id);
-    public bool UserExistsById(long id, out IUserModel? user);
+    public bool ExistsUser(long id, out IUserModel? user);
 }

@@ -5,30 +5,36 @@ namespace UserDBService.Sources.Commands;
 
 public class ListUserCommand : IUserCommand
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _service;
+    private IEnumerable<IUserModel>? _userList;
 
-    public ListUserCommand(IUserService userService)
+    public ListUserCommand(IUserService service)
     {
-        _userService = userService;
+        _service = service;
     }
 
     public void Execute(string[] args)
     {
-        if (_userService.Count == 0)
+        if (_service.Count == 0)
         {
             Console.WriteLine("Base is empty");
             return;
         }
 
-        var userList = _userService.GetAllUsers();
+        _userList = _service.Count == 0 ? null : _service.GetAllUsers();
+    }
 
+    public override string ToString()
+    {
         var table = new ConsoleTable("Id", "LastName", "Email");
 
-        foreach (var user in userList)
-        {
-            table.AddRow(user.Id, user.LastName, user.Email);
-        }
+        if (_userList != null)
+            foreach (var user in _userList)
+            {
+                table.AddRow(user.Id, user.LastName, user.Email);
+            }
 
         table.Write();
+        return "";
     }
 }

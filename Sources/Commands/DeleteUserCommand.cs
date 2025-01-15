@@ -5,29 +5,30 @@ namespace UserDBService.Sources.Commands;
 
 public class DeleteUserCommand : IUserCommand
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _service;
+    private int _userId;
+    private bool _isDeleted;
 
-    public DeleteUserCommand(IUserService userService)
+    public DeleteUserCommand(IUserService service)
     {
-        _userService = userService;
+        _service = service;
     }
+
 
     public void Execute(string[] args)
     {
-        if (!ArgsValidationHelper.IsValidArgs(args, 1, "Usage: delete-user {userId}") ||
-            !int.TryParse(args[0], out int userId))
+        if (!ValidationUtil.IsValidArgs(args, 1, "Usage: delete-user {userId}") ||
+            !int.TryParse(args[0], out _userId))
         {
             return;
         }
 
-        try
-        {
-            _userService.DeleteUser(userId);
-            Console.WriteLine($"User with Id {userId} deleted successfully.");
-        }
-        catch (KeyNotFoundException)
-        {
-            Console.WriteLine($"User with Id {userId} not found.");
-        }
+        _isDeleted = _service.UserExistsById(_userId, out _);
+        if (_isDeleted) _service.DeleteUser(_userId);
+    }
+
+    public override string ToString()
+    {
+        return _isDeleted ? $"User with Id {_userId} deleted successfully." : $"User with Id {_userId} not found.";
     }
 }

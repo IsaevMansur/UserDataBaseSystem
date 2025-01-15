@@ -6,30 +6,37 @@ namespace UserDBService.Sources.Commands;
 
 public class UpdateUserCommand : IUserCommand
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _service;
+    private (string Id, string FirstName, string LastName, string Phone, string Email) _userData;
+    private (bool IsValid, string? ErrorMessage) _validationResult;
 
-    public UpdateUserCommand(IUserService userService)
+    public UpdateUserCommand(IUserService service)
     {
-        _userService = userService;
+        _service = service;
     }
 
     public void Execute(string[] args)
     {
-        if (!ArgsValidationHelper.IsValidArgs(args, 5, "Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>") ||
-            args[0].All(char.IsDigit))
+        if (!ValidationUtil.IsValidArgs(args, 5,
+                "Needs arguments: <Id> <FirstName> <LastName> <Phone> <Email>"))
+
         {
             return;
         }
 
-        var userData = ExtractUserData(args);
-        var validationResult = ValidateUserData(userData);
+        _userData = ExtractUserData(args);
+        _validationResult = ValidateUserData(_userData);
 
-        if (!validationResult.IsValid)
-            Console.WriteLine(validationResult.ErrorMessage);
+        if (!_validationResult.IsValid)
+            return;
 
-        _userService.UpdateUser(long.Parse(userData.Id),
-            new UserModel(userData.FirstName, userData.LastName, userData.Phone, userData.Email));
-        Console.WriteLine($"User by Id: {userData.Id} updated.");
+        _service.UpdateUser(long.Parse(_userData.Id),
+            new UserModel(_userData.FirstName, _userData.LastName, _userData.Phone, _userData.Email));
+    }
+
+    public override string? ToString()
+    {
+        return _validationResult.IsValid ? $"User by Id: {_userData.Id} updated." : _validationResult.ErrorMessage;
     }
 
     private static (string Id, string FirstName, string LastName, string Phone, string Email) ExtractUserData(
@@ -41,20 +48,20 @@ public class UpdateUserCommand : IUserCommand
     private static (bool IsValid, string? ErrorMessage) ValidateUserData(
         (string Id, string FirstName, string LastName, string Phone, string Email) userData)
     {
-        if (!ValidationHelper.IsValidId(userData.Id))
+        if (!ValidationUtil.IsValidId(userData.Id))
             return (false, "Id field is empy or is not digits.");
 
-        if (!ValidationHelper.IsValidName(userData.FirstName))
+        if (!ValidationUtil.IsValidName(userData.FirstName))
             return (false, "The first name must contain at least 2 letters.");
 
-        if (!ValidationHelper.IsValidName(userData.LastName))
+        if (!ValidationUtil.IsValidName(userData.LastName))
             return (false, "The last name must contain at least 2 letters.");
 
-        if (!ValidationHelper.IsValidNumber(userData.Phone))
-            return (false, $"Invalid number format, example: {ValidationHelper.PhoneSample}");
+        if (!ValidationUtil.IsValidNumber(userData.Phone))
+            return (false, $"Invalid number format, example: {ValidationUtil.PhoneSample}");
 
-        if (!ValidationHelper.IsValidEmail(userData.Email))
-            return (false, $"Invalid email format, example: {ValidationHelper.EmailSample}");
+        if (!ValidationUtil.IsValidEmail(userData.Email))
+            return (false, $"Invalid email format, example: {ValidationUtil.EmailSample}");
 
         return (true, null);
     }

@@ -6,33 +6,39 @@ namespace UserDBService.Sources.Commands;
 
 public class AddUserCommand : IUserCommand
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _service;
+    private readonly UserModel _user = new();
+    (bool IsValid, string? ErrorMessage) validationResult;
 
-    public AddUserCommand(IUserService userService)
+    public AddUserCommand(IUserService service)
     {
-        _userService = userService;
+        _service = service;
     }
 
     public void Execute(string[] args)
     {
-        if (!ArgsValidationHelper.IsValidArgs(args, 4,
+        if (!ValidationUtil.IsValidArgs(args, 4,
                 "Usage: add user <FirstName> <LastName> <Phone> <Email>"))
             return;
 
         var userData = ExtractUserData(args);
 
-        var validationResult = ValidateUserData(userData);
+        validationResult = ValidateUserData(userData);
 
         if (!validationResult.IsValid)
-        {
-            Console.WriteLine(validationResult.ErrorMessage);
             return;
-        }
 
-        var user = new UserModel(userData.FirstName, userData.LastName, userData.Phone, userData.Email);
+        _user.FirstName = userData.FirstName;
+        _user.LastName = userData.LastName;
+        _user.Phone = userData.Phone;
+        _user.Email = userData.Email;
 
-        _userService.AddUser(user);
-        Console.WriteLine($"User {user.FirstName} {user.LastName} added successfully.");
+        _service.AddUser(_user);
+    }
+
+    public override string ToString()
+    {
+        return validationResult.IsValid ? "User added successfully" : $"{validationResult.ErrorMessage}";
     }
 
     private static (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)
@@ -43,17 +49,17 @@ public class AddUserCommand : IUserCommand
     private static (bool IsValid, string? ErrorMessage) ValidateUserData(
         (string FirstName, string LastName, string Phone, string Email) userData)
     {
-        if (!ValidationHelper.IsValidName(userData.FirstName))
+        if (!ValidationUtil.IsValidName(userData.FirstName))
             return (false, "The first name must contain at least 2 letters.");
 
-        if (!ValidationHelper.IsValidName(userData.LastName))
+        if (!ValidationUtil.IsValidName(userData.LastName))
             return (false, "The last name must contain at least 2 letters.");
 
-        if (!ValidationHelper.IsValidNumber(userData.Phone))
-            return (false, $"Invalid number format, example: {ValidationHelper.PhoneSample}");
+        if (!ValidationUtil.IsValidNumber(userData.Phone))
+            return (false, $"Invalid number format, example: {ValidationUtil.PhoneSample}");
 
-        if (!ValidationHelper.IsValidEmail(userData.Email))
-            return (false, $"Invalid email format, example: {ValidationHelper.EmailSample}");
+        if (!ValidationUtil.IsValidEmail(userData.Email))
+            return (false, $"Invalid email format, example: {ValidationUtil.EmailSample}");
 
         return (true, null);
     }

@@ -1,34 +1,37 @@
-﻿using UserDBService.Sources.Interfaces;
+﻿using ConsoleTables;
+using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
 public class GetUserCommand : IUserCommand
 {
-    private readonly IUserService _userService;
+    private readonly IUserService _service;
+    private IUserModel? _user;
+    private readonly ConsoleTable _table = new("Id", "LastName", "Email");
 
-    public GetUserCommand(IUserService userService)
+    public GetUserCommand(IUserService service)
     {
-        _userService = userService;
+        _service = service;
     }
 
     public void Execute(string[] args)
     {
-        if (!ArgsValidationHelper.IsValidArgs(args, 1, "Usage: get <Id>") || !args[0].All(char.IsDigit))
+        if (!ValidationUtil.IsValidArgs(args, 1, "Usage: get <Id>") ||
+            !int.TryParse(args[0], out int id))
         {
             return;
         }
 
-        int userId = int.Parse(args[0]);
-        _userService.TryGetUserById(userId, out var user);
-        if (user != null)
+        _service.UserExistsById(id, out _user);
+        if (_user != null)
         {
-            Console.WriteLine("Id\t\tName\t\tEmail");
-            Console.WriteLine(user.ToString());
+            _table.AddRow(_user.Id, _user.LastName, _user.Email);
         }
-        else
-        {
-            Console.WriteLine("Id not found");
-        }
+    }
+
+    public override string ToString()
+    {
+        return _user is not null ? _table.ToString() : "Id not found";
     }
 }

@@ -1,12 +1,13 @@
 ﻿using UserDBService.Sources.Models;
+using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Interfaces;
 
 public interface IUserBuilder
 {
-    public (UserModel? model, string error) Build();
-    public void SetFirstName(string firstName);
-    public void SetLastName(string lastName);
-    public void SetEmail(string email);
-    public void SetPhone(string phone);
+    public Result<UserModel> Build();
+    public IUserBuilder SetFirstName(string firstName);
+    public IUserBuilder SetLastName(string lastName);
+    public IUserBuilder SetEmail(string email);
+    public IUserBuilder SetPhone(string phone);
 }

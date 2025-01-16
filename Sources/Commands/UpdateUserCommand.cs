@@ -21,21 +21,20 @@ public class UpdateUserCommand : IUserCommand
             return;
 
         var userData = ExtractUserData(args);
-        UserBuilder builder = new UserBuilder();
-
-        builder.SetFirstName(userData.FirstName);
-        builder.SetLastName(userData.LastName);
-        builder.SetPhone(userData.Phone);
-        builder.SetEmail(userData.Email);
+        var builder = new UserBuilder()
+            .SetFirstName(userData.FirstName)
+            .SetLastName(userData.LastName)
+            .SetPhone(userData.Phone)
+            .SetEmail(userData.Email);
 
         var user = builder.Build();
-        if (user.model == null)
+        if (user.Model == null)
         {
-            _error = user.error + '\n' + "Usage: update user <Id> <FirstName> <LastName> <Phone> <Email>";
+            _error = user.Error + '\n' + "Usage: update <Id> <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
-        _service.UpdateUser(long.Parse(userData.Id), user.model);
+        _service.UpdateUser(id: long.Parse(userData.Id), vice: user.Model);
     }
 
     public override string ToString()

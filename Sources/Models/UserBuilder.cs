@@ -6,54 +6,65 @@ namespace UserDBService.Sources.Models;
 public class UserBuilder : IUserBuilder
 {
     private readonly UserModel _user = new();
-    private string _error = string.Empty;
+    private Result<UserModel> _result = Result<UserModel>.Success(new UserModel());
 
-    public (UserModel? model, string error) Build()
+
+    public Result<UserModel> Build()
     {
-        return (string.IsNullOrEmpty(_error) ? _user : null, _error);
+        return _result is { IsSuccess: true }
+            ? Result<UserModel>.Success(_user)
+            : Result<UserModel>.Failure(_result.Error);
     }
 
-    public void SetFirstName(string firstName)
+    public IUserBuilder SetFirstName(string firstName)
     {
+        if (!_result.IsSuccess) return this;
         if (!ValidationUtil.IsValidName(firstName))
         {
-            _error = "The first name must contain at least 2 letters.";
-            return;
+            _result = Result<UserModel>.Failure("The first name must contain at least 2 letters.");
+            return this;
         }
 
         _user.FirstName = firstName;
+        return this;
     }
 
-    public void SetLastName(string lastName)
+    public IUserBuilder SetLastName(string lastName)
     {
+        if (!_result.IsSuccess) return this;
         if (!ValidationUtil.IsValidName(lastName))
         {
-            _error = "The last name must contain at least 2 letters.";
-            return;
+            _result = Result<UserModel>.Failure("The last name must contain at least 2 letters.");
+            return this;
         }
 
         _user.LastName = lastName;
+        return this;
     }
 
-    public void SetPhone(string phone)
+    public IUserBuilder SetPhone(string phone)
     {
+        if (!_result.IsSuccess) return this;
         if (!ValidationUtil.IsValidPhone(phone))
         {
-            _error = $"Invalid number format, example: {ValidationUtil.PhoneSample}";
-            return;
+            _result = Result<UserModel>.Failure($"Invalid number format, example: {ValidationUtil.PhoneSample}");
+            return this;
         }
 
         _user.Phone = phone;
+        return this;
     }
 
-    public void SetEmail(string email)
+    public IUserBuilder SetEmail(string email)
     {
+        if (!_result.IsSuccess) return this;
         if (!ValidationUtil.IsValidEmail(email))
         {
-            _error = $"Invalid email format, example: {ValidationUtil.EmailSample}";
-            return;
+            _result = Result<UserModel>.Failure($"Invalid email format, example: {ValidationUtil.EmailSample}");
+            return this;
         }
 
         _user.Email = email;
+        return this;
     }
 }

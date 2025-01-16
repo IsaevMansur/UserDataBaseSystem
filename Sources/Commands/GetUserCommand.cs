@@ -17,21 +17,21 @@ public class GetUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
+        if (_service.Count == 0)
+        {
+            _error = "Users not found";
+            return;
+        }
+
         if (args.Length == 0)
         {
-            _error = "Usage: add user <FirstName> <LastName> <Phone> <Email>";
+            _error = "Usage: get <Id>";
             return;
         }
 
         if (!int.TryParse(args[0], out int id))
         {
             _error = "Id must be an integer";
-            return;
-        }
-
-        if (_service.Count == 0)
-        {
-            _error = "Users not found";
             return;
         }
 

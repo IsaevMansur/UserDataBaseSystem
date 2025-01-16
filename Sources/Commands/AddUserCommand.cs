@@ -15,22 +15,28 @@ public class AddUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        var userData = ExtractUserData(args);
-        UserBuilder builder = new UserBuilder();
-
-        builder.SetFirstName(userData.FirstName);
-        builder.SetLastName(userData.LastName);
-        builder.SetPhone(userData.Phone);
-        builder.SetEmail(userData.Email);
-
-        var user = builder.Build();
-        if (user.model == null)
+        if (args.Length < 4)
         {
-            _error = user.error + '\n' + "Usage: add user <FirstName> <LastName> <Phone> <Email>";
+            _error = "Usage: add user <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
-        _service.AddUser(user.model);
+        var userData = ExtractUserData(args);
+        var builder = new UserBuilder()
+            .SetFirstName(userData.FirstName)
+            .SetLastName(userData.LastName)
+            .SetPhone(userData.Phone)
+            .SetEmail(userData.Email);
+
+        var user = builder.Build();
+
+        if (user.Model is null)
+        {
+            _error = user.Error;
+            return;
+        }
+
+        _service.AddUser(user.Model);
     }
 
     public override string ToString()

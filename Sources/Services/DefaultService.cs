@@ -28,12 +28,12 @@ public class DefaultService : IUserService
         return _usersDatabase.GetAll() ?? throw new Exception($"Database is empty.");
     }
 
-    public void UpdateUser(long id, IUserModel user)
+    public void UpdateUser(long id, IUserModel vice)
     {
-        ArgumentNullException.ThrowIfNull(user);
+        ArgumentNullException.ThrowIfNull(vice);
 
         if (ExistsUser(id, out _))
-            _usersDatabase.Update(id, user);
+            _usersDatabase.Update(id, vice);
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
     }

@@ -23,7 +23,10 @@ public class DeleteUserCommand : IUserCommand
         }
 
         if (_service.ExistsUser(_userId, out _))
+        {
             _service.DeleteUser(_userId);
+            return;
+        }
 
         _error = $"User with Id {_userId} not found.";
     }

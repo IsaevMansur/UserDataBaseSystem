@@ -6,10 +6,9 @@ namespace UserDBService.Sources.Commands;
 public class GetUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    private readonly ConsoleTable _table = new("Id", "LastName", "Email");
-
-    private IUserModel? _user;
     private string _error = string.Empty;
+    private ConsoleTable? _table;
+
 
     public GetUserCommand(IUserService service)
     {
@@ -26,17 +25,26 @@ public class GetUserCommand : IUserCommand
 
         if (!int.TryParse(args[0], out int id))
         {
-            _error = "Id must be a number";
+            _error = "Id must be an integer";
             return;
         }
 
+        if (_service.Count == 0)
+        {
+            _error = "Users not found";
+            return;
+        }
 
-        if (_service.ExistsUser(id, out _user) && _user is not null)
-            _table.AddRow(_user.Id, _user.LastName, _user.Email);
+        _table = new ConsoleTable("Id", "LastName", "Email");
+
+        if (_service.ExistsUser(id, out var user) && user is not null)
+            _table.AddRow(user.Id, user.LastName, user.Email);
     }
 
     public override string ToString()
     {
-        return _error == string.Empty ? _error : _table.ToString();
+        return _error == string.Empty && _table is not null
+            ? _table.ToString()
+            : _error;
     }
 }

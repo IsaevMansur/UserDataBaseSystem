@@ -15,26 +15,19 @@ public class ListUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (_service.Count == 0)
-        {
-            Console.WriteLine("Base is empty");
-            return;
-        }
-
         _userList = _service.Count == 0 ? null : _service.GetAllUsers();
     }
 
     public override string ToString()
     {
+        if (_userList is null) return "Base is empty";
+
         var table = new ConsoleTable("Id", "LastName", "Email");
+        foreach (var user in _userList)
+        {
+            table.AddRow(user.Id, user.LastName, user.Email);
+        }
 
-        if (_userList != null)
-            foreach (var user in _userList)
-            {
-                table.AddRow(user.Id, user.LastName, user.Email);
-            }
-
-        table.Write();
-        return "";
+        return table.ToString();
     }
 }

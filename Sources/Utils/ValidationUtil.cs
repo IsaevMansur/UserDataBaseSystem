@@ -16,7 +16,7 @@ public static partial class ValidationUtil
         !string.IsNullOrEmpty(phone) && phone.All(char.IsDigit) && phone.Length == 10;
 
     public static bool IsValidName(string name) =>
-        !string.IsNullOrEmpty(name) && name.Length > 1 && name.All(char.IsLetter);
+        !string.IsNullOrEmpty(name) && name.Length >= 2 && name.All(char.IsLetter);
 
     public static bool IsValidId(string id) =>
         !string.IsNullOrEmpty(id) && id.All(char.IsDigit);

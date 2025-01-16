@@ -1,5 +1,4 @@
 ﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
@@ -7,7 +6,7 @@ public class DeleteUserCommand : IUserCommand
 {
     private readonly IUserService _service;
     private int _userId;
-    private bool _isDeleted;
+    private string _error = string.Empty;
 
     public DeleteUserCommand(IUserService service)
     {
@@ -17,18 +16,22 @@ public class DeleteUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!ValidationUtil.IsValidArgs(args, 1, "Usage: delete-user {userId}") ||
-            !int.TryParse(args[0], out _userId))
+        if (!int.TryParse(args[0], out _userId))
         {
+            _error = "ID must be an integer";
             return;
         }
 
-        _isDeleted = _service.ExistsUser(_userId, out _);
-        if (_isDeleted) _service.DeleteUser(_userId);
+        if (_service.ExistsUser(_userId, out _))
+            _service.DeleteUser(_userId);
+
+        _error = $"User with Id {_userId} not found.";
     }
 
     public override string ToString()
     {
-        return _isDeleted ? $"User with Id {_userId} deleted successfully." : $"User with Id {_userId} not found.";
+        return _error == string.Empty
+            ? $"User with Id {_userId} deleted successfully."
+            : _error;
     }
 }

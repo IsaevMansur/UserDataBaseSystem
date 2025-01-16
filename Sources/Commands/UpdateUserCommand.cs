@@ -31,7 +31,7 @@ public class UpdateUserCommand : IUserCommand
         var user = builder.Build();
         if (user.model == null)
         {
-            _error = user.error;
+            _error = user.error + '\n' + "Usage: update user <Id> <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
@@ -40,9 +40,7 @@ public class UpdateUserCommand : IUserCommand
 
     public override string ToString()
     {
-        return _error != string.Empty
-            ? $"{_error}\nUsage: update user <Id> <FirstName> <LastName> <Phone> <Email>"
-            : "User by id updated successfully.";
+        return _error == string.Empty ? "User by id updated successfully." : _error;
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local

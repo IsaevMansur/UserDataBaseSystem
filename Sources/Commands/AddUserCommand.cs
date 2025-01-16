@@ -26,7 +26,7 @@ public class AddUserCommand : IUserCommand
         var user = builder.Build();
         if (user.model == null)
         {
-            _error = user.error;
+            _error = user.error + '\n' + "Usage: add user <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
@@ -35,9 +35,9 @@ public class AddUserCommand : IUserCommand
 
     public override string ToString()
     {
-        return _error != string.Empty
-            ? $"{_error}\nUsage: add user <FirstName> <LastName> <Phone> <Email>"
-            : "User added successfully.";
+        return _error == string.Empty
+            ? "User added successfully."
+            : _error;
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local

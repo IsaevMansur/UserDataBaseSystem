@@ -11,7 +11,7 @@ while (true)
 {
     Console.Write("> ");
 
-    var input = Console.ReadLine()?.Trim();
-    if (input is null || input.ToLower() is "exit") break;
+    var input = Console.ReadLine() ?? "";
+    if (input.ToLower() is "exit") break;
     handler.ProcessCommand(input);
 }

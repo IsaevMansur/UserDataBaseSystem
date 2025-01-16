@@ -4,7 +4,7 @@ namespace UserDBService.Sources.Repositories;
 
 public class UserRepository : IUserDb
 {
-    private readonly Dictionary<long, IUserModel> _userDb = [];
+    private readonly Dictionary<long, IUserModel> _userDb = new();
     private long _currentUserId = 1;
     public long Count => _userDb.Count;
 
@@ -16,7 +16,7 @@ public class UserRepository : IUserDb
 
     public IUserModel Get(long id) => _userDb[id];
 
-    public bool Exists(long id) => _userDb.ContainsKey(id);
+    public bool Contains(long id) => _userDb.ContainsKey(id);
 
     public IEnumerable<IUserModel> GetAll() => _userDb.Values;
 

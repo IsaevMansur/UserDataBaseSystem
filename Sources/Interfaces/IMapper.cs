@@ -1,8 +1,9 @@
-﻿using UserDBService.Sources.Utils;
+﻿namespace UserDBService.Sources.Interfaces;
 
-namespace UserDBService.Sources.Interfaces;
-
-public interface IMapper<in TFrom, TTo>
+public interface IMapper<in TFrom, out TTo>
 {
-    Result<TTo> Map(TFrom from);
+    public static TTo Map(TFrom from)
+    {
+        throw new NotImplementedException();
+    }
 }

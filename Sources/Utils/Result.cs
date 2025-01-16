@@ -9,7 +9,7 @@ public class Result<T>
     }
 
     public T? Model { get; }
-    public string Error { get; }
+    public string? Error { get; }
     public bool IsSuccess => !string.IsNullOrEmpty(Error);
 
     public static Result<T> Success(T value) => new(value, string.Empty);

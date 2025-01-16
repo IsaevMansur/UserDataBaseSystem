@@ -1,26 +1,26 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Models.Dto.Requests;
-using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Mapping;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class ModelToDto : IMapper<UserModel, UserDto>
 {
-    public Result<UserDto> Map(UserModel? from)
+    public static UserDto Map(UserModel? from)
     {
-        if (from == null)
-            return Result<UserDto>.Failure("Model is null");
+        ArgumentNullException.ThrowIfNull(from);
 
         var builder = new UserBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)
             .SetEmail(from.Email);
-        var model = builder.Build().Model;
+        var build = builder.Build();
 
-        if (model == null)
-            return Result<UserDto>.Failure("User model is invalid");
+        if (build.Model == null)
+            throw new ArgumentNullException(build.Error);
+        var model = build.Model;
 
         var dto = new UserDto
         {
@@ -29,6 +29,6 @@ public class ModelToDto : IMapper<UserModel, UserDto>
             Phone = model.Phone,
             Email = model.Email
         };
-        return Result<UserDto>.Success(dto);
+        return dto;
     }
 }

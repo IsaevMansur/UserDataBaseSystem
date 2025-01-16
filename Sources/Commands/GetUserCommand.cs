@@ -1,5 +1,4 @@
-﻿using ConsoleTables;
-using UserDBService.Sources.Interfaces;
+﻿using UserDBService.Sources.Interfaces;
 
 namespace UserDBService.Sources.Commands;
 
@@ -7,7 +6,7 @@ public class GetUserCommand : IUserCommand
 {
     private readonly IUserService _service;
     private string _error = string.Empty;
-    private ConsoleTable? _table;
+    private string? _result;
 
 
     public GetUserCommand(IUserService service)
@@ -19,32 +18,37 @@ public class GetUserCommand : IUserCommand
     {
         if (_service.Count == 0)
         {
-            _error = "Users not found";
+            _error = "Base is empty.";
             return;
         }
 
         if (args.Length == 0)
         {
-            _error = "Usage: get <Id>";
+            _error = "Usage: get <Id>.";
             return;
         }
 
-        if (!int.TryParse(args[0], out int id))
+        if (!long.TryParse(args[0], out long id))
         {
-            _error = "Id must be an integer";
+            _error = "Id must be an integer.";
             return;
         }
 
-        _table = new ConsoleTable("Id", "LastName", "Email");
+        if (!_service.TryGetUser(id, out var user) || user is null)
+        {
+            _error = $"User with id {id} not found.";
+            return;
+        }
 
-        if (_service.ExistsUser(id, out var user) && user is not null)
-            _table.AddRow(user.Id, user.LastName, user.Email);
+        _result = user.ToString();
     }
 
     public override string ToString()
     {
-        return _error == string.Empty && _table is not null
-            ? _table.ToString()
+        string result = _error == string.Empty && _result is not null
+            ? _result
             : _error;
+        _error = string.Empty;
+        return result;
     }
 }

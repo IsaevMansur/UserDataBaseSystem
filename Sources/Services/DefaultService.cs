@@ -17,49 +17,47 @@ public class DefaultService : IUserService
 
     public void AddUser(UserDto model)
     {
-        ArgumentNullException.ThrowIfNull(model);
-
         var user = _toModel.Map(model);
-        ArgumentNullException.ThrowIfNull(user.Model);
-        _usersDatabase.Add(user.Model);
+        _usersDatabase.Add(user);
     }
 
-    public IUserModel GetUser(long id)
+    public IUserModel GetUser(long? id)
     {
-        return _usersDatabase.Get(id) ?? throw new KeyNotFoundException($"User with id: {id} was not found.");
+        if (!id.HasValue)
+            throw new ArgumentNullException(nameof(id));
+        return _usersDatabase.Get((long)id) ?? throw new InvalidOperationException();
     }
 
     public IEnumerable<IUserModel> GetAllUsers()
     {
-        return _usersDatabase.GetAll() ?? throw new Exception($"Database is empty.");
+        return _usersDatabase.GetAll() ?? throw new Exception("Database is empty.");
     }
 
-    public void UpdateUser(long id, UserDto vice)
+    public void UpdateUser(long? id, UserDto vice)
     {
-        ArgumentNullException.ThrowIfNull(vice);
-
-        if (ExistsUser(id, out _))
+        if (!id.HasValue)
+            throw new ArgumentNullException(nameof(id));
+        if (_usersDatabase.Contains((long)id))
         {
             var user = _toModel.Map(vice);
-            ArgumentNullException.ThrowIfNull(user.Model);
-            _usersDatabase.Update(id, user.Model);
+            _usersDatabase.Update((long)id, user);
         }
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
     }
 
-    public void DeleteUser(long id)
+    public void DeleteUser(long? id)
     {
-        if (ExistsUser(id, out _))
-            _usersDatabase.Remove(id);
+        if (!id.HasValue)
+            throw new ArgumentNullException(nameof(id));
 
-        throw new KeyNotFoundException($"User with Id: {id} not found.");
+        _usersDatabase.Remove((long)id);
     }
 
-    public bool ExistsUser(long id, out IUserModel? user)
+    public bool TryGetUser(long id, out IUserModel? user)
     {
         user = null;
-        if (_usersDatabase.Exists(id))
+        if (_usersDatabase.Contains(id))
             user = _usersDatabase.Get(id);
 
         return user is not null;

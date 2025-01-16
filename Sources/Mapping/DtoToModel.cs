@@ -1,24 +1,24 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Models.Dto.Requests;
-using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Mapping;
 
 public class DtoToModel : IMapper<UserDto, UserModel>
 {
-    public Result<UserModel> Map(UserDto? from)
+    public UserModel Map(UserDto? from)
     {
-        if (from == null)
-            return Result<UserModel>.Failure("UserDto is null");
+        ArgumentNullException.ThrowIfNull(from);
 
         var builder = new UserBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)
             .SetEmail(from.Email);
-        var model = builder.Build().Model;
+        var build = builder.Build();
 
-        return model == null ? Result<UserModel>.Failure("UserDto is null") : Result<UserModel>.Success(model);
+        if (build.Model == null)
+            throw new NullReferenceException(build.Error);
+        return build.Model;
     }
 }

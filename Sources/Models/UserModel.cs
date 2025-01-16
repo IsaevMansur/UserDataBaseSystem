@@ -28,6 +28,6 @@ public class UserModel : IUserModel
 
     public override string ToString()
     {
-        return $"{Id}\t\t{LastName}\t\t{Email}";
+        return $"{Id}:{LastName}:{Email}";
     }
 }

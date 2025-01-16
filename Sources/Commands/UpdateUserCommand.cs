@@ -1,7 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Mapping;
 using UserDBService.Sources.Models;
-using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
@@ -10,7 +9,6 @@ public class UpdateUserCommand : IUserCommand
     private readonly IUserService _service;
     private string _error = string.Empty;
 
-
     public UpdateUserCommand(IUserService service)
     {
         _service = service;
@@ -18,29 +16,45 @@ public class UpdateUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
-        if (!ValidationUtil.IsValidId(args[0]))
+        if (_service.Count == 0)
+        {
+            _error = "Base is empty.";
             return;
+        }
+
+        if (args.Length == 0)
+        {
+            _error = "Usage: update <Id> <Firstname> <Lastname> <Phone> <Email>.";
+            return;
+        }
+
+        if (!long.TryParse(args[0], out long id))
+        {
+            _error = "Id must be an integer.";
+            return;
+        }
+
+        if (!_service.TryGetUser(id, out _))
+        {
+            _error = "Id not found.";
+            return;
+        }
 
         var userData = ExtractUserData(args);
 
-        ModelToDto dtoRequest = new ModelToDto();
-        var dto = dtoRequest.Map(new UserModel(userData.FirstName,
+        var dto = ModelToDto.Map(new UserModel(userData.FirstName,
             userData.LastName,
             userData.Phone,
             userData.Email));
 
-        if (dto.Model == null)
-        {
-            _error = dto.Error + '\n' + "Usage: update <Id> <FirstName> <LastName> <Phone> <Email>";
-            return;
-        }
-
-        _service.UpdateUser(id: long.Parse(userData.Id), vice: dto.Model);
+        _service.UpdateUser(id, dto);
     }
 
     public override string ToString()
     {
-        return _error == string.Empty ? "User by id updated successfully." : _error;
+        string result = _error == string.Empty ? "User by id updated successfully." : _error;
+        _error = string.Empty;
+        return result;
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local

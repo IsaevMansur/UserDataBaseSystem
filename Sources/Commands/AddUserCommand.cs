@@ -7,7 +7,7 @@ namespace UserDBService.Sources.Commands;
 public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    private string _error = string.Empty;
+    public string _error = string.Empty;
 
     public AddUserCommand(IUserService service)
     {
@@ -22,27 +22,23 @@ public class AddUserCommand : IUserCommand
             return;
         }
 
-        var userData = ExtractUserData(args);
-        ModelToDto dtoRequest = new ModelToDto();
-        var dto = dtoRequest.Map(new UserModel(userData.FirstName,
-            userData.LastName,
-            userData.Phone,
-            userData.Email));
+        var data = ExtractUserData(args);
+        var dto = ModelToDto.Map(new UserModel(data.FirstName,
+            data.LastName,
+            data.Phone,
+            data.Email));
 
-        if (dto.Model == null)
-        {
-            _error = dto.Error + '\n' + "Usage: update <Id> <FirstName> <LastName> <Phone> <Email>";
-            return;
-        }
 
-        _service.AddUser(dto.Model);
+        _service.AddUser(dto);
     }
 
     public override string ToString()
     {
-        return _error == string.Empty
+        string result = _error == string.Empty
             ? "User added successfully."
             : _error;
+        _error = string.Empty;
+        return result;
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local

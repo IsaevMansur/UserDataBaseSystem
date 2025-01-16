@@ -18,23 +18,25 @@ public class DeleteUserCommand : IUserCommand
     {
         if (!int.TryParse(args[0], out _userId))
         {
-            _error = "ID must be an integer";
+            _error = "ID must be an integer.";
             return;
         }
 
-        if (_service.ExistsUser(_userId, out _))
+        if (!_service.TryGetUser(_userId, out _))
         {
-            _service.DeleteUser(_userId);
+            _error = $"User with Id {_userId} not found.";
             return;
         }
 
-        _error = $"User with Id {_userId} not found.";
+        _service.DeleteUser(_userId);
     }
 
     public override string ToString()
     {
-        return _error == string.Empty
+        string result = _error == string.Empty
             ? $"User with Id {_userId} deleted successfully."
             : _error;
+        _error = string.Empty;
+        return result;
     }
 }

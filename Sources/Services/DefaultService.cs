@@ -1,10 +1,13 @@
 ﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Mapping;
+using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Services;
 
 public class DefaultService : IUserService
 {
     private readonly IUserDb _usersDatabase;
+    private readonly DtoToModel _toModel = new();
     public long Count => _usersDatabase.Count;
 
     public DefaultService(IUserDb usersDatabase)
@@ -12,10 +15,13 @@ public class DefaultService : IUserService
         _usersDatabase = usersDatabase;
     }
 
-    public void AddUser(IUserModel userModel)
+    public void AddUser(UserDto model)
     {
-        ArgumentNullException.ThrowIfNull(userModel);
-        _usersDatabase.Add(userModel);
+        ArgumentNullException.ThrowIfNull(model);
+
+        var user = _toModel.Map(model);
+        ArgumentNullException.ThrowIfNull(user.Model);
+        _usersDatabase.Add(user.Model);
     }
 
     public IUserModel GetUser(long id)
@@ -28,12 +34,16 @@ public class DefaultService : IUserService
         return _usersDatabase.GetAll() ?? throw new Exception($"Database is empty.");
     }
 
-    public void UpdateUser(long id, IUserModel vice)
+    public void UpdateUser(long id, UserDto vice)
     {
         ArgumentNullException.ThrowIfNull(vice);
 
         if (ExistsUser(id, out _))
-            _usersDatabase.Update(id, vice);
+        {
+            var user = _toModel.Map(vice);
+            ArgumentNullException.ThrowIfNull(user.Model);
+            _usersDatabase.Update(id, user.Model);
+        }
 
         throw new KeyNotFoundException($"User with Id: {id} not found.");
     }

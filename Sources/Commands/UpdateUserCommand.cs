@@ -1,4 +1,5 @@
 ﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Mapping;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Utils;
 
@@ -21,20 +22,20 @@ public class UpdateUserCommand : IUserCommand
             return;
 
         var userData = ExtractUserData(args);
-        var builder = new UserBuilder()
-            .SetFirstName(userData.FirstName)
-            .SetLastName(userData.LastName)
-            .SetPhone(userData.Phone)
-            .SetEmail(userData.Email);
 
-        var user = builder.Build();
-        if (user.Model == null)
+        ModelToDto dtoRequest = new ModelToDto();
+        var dto = dtoRequest.Map(new UserModel(userData.FirstName,
+            userData.LastName,
+            userData.Phone,
+            userData.Email));
+
+        if (dto.Model == null)
         {
-            _error = user.Error + '\n' + "Usage: update <Id> <FirstName> <LastName> <Phone> <Email>";
+            _error = dto.Error + '\n' + "Usage: update <Id> <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
-        _service.UpdateUser(id: long.Parse(userData.Id), vice: user.Model);
+        _service.UpdateUser(id: long.Parse(userData.Id), vice: dto.Model);
     }
 
     public override string ToString()

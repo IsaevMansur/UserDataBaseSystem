@@ -1,6 +1,6 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Mapping;
-using UserDBService.Sources.Models;
+using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
@@ -22,6 +22,30 @@ public class AddUserCommand : IUserCommand
             return;
         }
 
+        if (!ValidationUtil.IsValidName(args[0]))
+        {
+            _error = "First name must be between 2 and 50 characters.";
+            return;
+        }
+
+        if (!ValidationUtil.IsValidName(args[1]))
+        {
+            _error = "Last name must be between 2 and 50 characters.";
+            return;
+        }
+
+        if (!ValidationUtil.IsValidPhone(args[2]))
+        {
+            _error = $"Invalid phone number format. Valid format {ValidationUtil.PhoneSample}";
+            return;
+        }
+
+        if (!ValidationUtil.IsValidEmail(args[3]))
+        {
+            _error = $"Invalid email format. Valid format {ValidationUtil.EmailSample}";
+            return;
+        }
+
         var dto = ModelToDto.Map(args);
 
         _service.AddUser(dto);
@@ -34,11 +58,5 @@ public class AddUserCommand : IUserCommand
             : _error;
         _error = string.Empty;
         return result;
-    }
-
-    // ReSharper disable once MemberCanBeMadeStatic.Local
-    private (string FirstName, string LastName, string Phone, string Email) ExtractUserData(string[] args)
-    {
-        return (args[0], args[1], args[2], args[3]);
     }
 }

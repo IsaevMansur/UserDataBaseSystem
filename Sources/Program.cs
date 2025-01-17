@@ -3,7 +3,7 @@ using UserDBService.Sources.Repositories;
 using UserDBService.Sources.Services;
 
 UserRepository database = new();
-DefaultService service = new(database);
+UserService service = new(database);
 CommandHandler handler = new(service);
 
 Console.WriteLine("Type a command or 'exit' to quit.");

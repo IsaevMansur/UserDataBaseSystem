@@ -7,7 +7,7 @@ namespace UserDBService.Sources.Commands;
 public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    public string _error = string.Empty;
+    private string _error = string.Empty;
 
     public AddUserCommand(IUserService service)
     {
@@ -18,16 +18,11 @@ public class AddUserCommand : IUserCommand
     {
         if (args.Length < 4)
         {
-            _error = "Usage: add user <FirstName> <LastName> <Phone> <Email>";
+            _error = "Usage: new <FirstName> <LastName> <Phone> <Email>";
             return;
         }
 
-        var data = ExtractUserData(args);
-        var dto = ModelToDto.Map(new UserModel(data.FirstName,
-            data.LastName,
-            data.Phone,
-            data.Email));
-
+        var dto = ModelToDto.Map(args);
 
         _service.AddUser(dto);
     }

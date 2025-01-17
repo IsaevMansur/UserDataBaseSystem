@@ -2,7 +2,7 @@
 
 public class Result<T>
 {
-    private Result(T? model, string error)
+    private Result(T? model, string? error)
     {
         this.Model = model;
         this.Error = error;
@@ -13,7 +13,7 @@ public class Result<T>
     public bool IsSuccess => !string.IsNullOrEmpty(Error);
 
     public static Result<T> Success(T value) => new(value, string.Empty);
-    public static Result<T> Failure(string error) => new(default, error);
+    public static Result<T> Failure(string? error) => new(default, error);
 
 
     public override string ToString()

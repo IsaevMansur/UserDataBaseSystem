@@ -1,6 +1,5 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Mapping;
-using UserDBService.Sources.Models;
 
 namespace UserDBService.Sources.Commands;
 
@@ -22,7 +21,7 @@ public class UpdateUserCommand : IUserCommand
             return;
         }
 
-        if (args.Length == 0)
+        if (args.Length < 5)
         {
             _error = "Usage: update <Id> <Firstname> <Lastname> <Phone> <Email>.";
             return;
@@ -34,18 +33,13 @@ public class UpdateUserCommand : IUserCommand
             return;
         }
 
-        if (!_service.TryGetUser(id, out _))
+        if (!_service.ContainsUser(id))
         {
             _error = "Id not found.";
             return;
         }
 
-        var userData = ExtractUserData(args);
-
-        var dto = ModelToDto.Map(new UserModel(userData.FirstName,
-            userData.LastName,
-            userData.Phone,
-            userData.Email));
+        var dto = ModelToDto.Map(args[1..]);
 
         _service.UpdateUser(id, dto);
     }
@@ -58,9 +52,4 @@ public class UpdateUserCommand : IUserCommand
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
-    private (string Id, string FirstName, string LastName, string Phone, string Email) ExtractUserData(
-        string[] args)
-    {
-        return (args[0], args[1], args[2], args[3], args[4]);
-    }
 }

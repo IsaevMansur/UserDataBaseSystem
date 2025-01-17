@@ -1,4 +1,5 @@
 ﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Mapping;
 
 namespace UserDBService.Sources.Commands;
 
@@ -22,7 +23,7 @@ public class GetUserCommand : IUserCommand
             return;
         }
 
-        if (args.Length == 0)
+        if (args.Length < 1)
         {
             _error = "Usage: get <Id>.";
             return;
@@ -34,13 +35,14 @@ public class GetUserCommand : IUserCommand
             return;
         }
 
-        if (!_service.TryGetUser(id, out var user) || user is null)
+        if (!_service.ContainsUser(id))
         {
             _error = $"User with id {id} not found.";
             return;
         }
 
-        _result = user.ToString();
+        var user = _service.GetUser(id);
+        _result = DtoToModel.Map(user).ToString();
     }
 
     public override string ToString()

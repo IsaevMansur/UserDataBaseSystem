@@ -16,13 +16,19 @@ public class DeleteUserCommand : IUserCommand
 
     public void Execute(string[] args)
     {
+        if (args.Length < 1)
+        {
+            _error = "Usage: delete <Id>";
+            return;
+        }
+
         if (!int.TryParse(args[0], out _userId))
         {
             _error = "ID must be an integer.";
             return;
         }
 
-        if (!_service.TryGetUser(_userId, out _))
+        if (!_service.ContainsUser(_userId))
         {
             _error = $"User with Id {_userId} not found.";
             return;

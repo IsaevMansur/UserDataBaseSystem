@@ -22,5 +22,9 @@ public class UserRepository : IUserDb
 
     public void Remove(long id) => _userDb.Remove(id);
 
-    public void Update(long id, IUserModel user) => _userDb[id] = user;
+    public void Update(long id, IUserModel user)
+    {
+        user.Id = id;
+        _userDb[id] = user;
+    }
 }

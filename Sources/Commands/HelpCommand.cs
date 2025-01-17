@@ -9,13 +9,13 @@ public class HelpCommand : IUserCommand
         { "help", "Shows this help message." },
         { "exit", "Exits the program." },
         { "list", "Lists all users." },
-        { "new", "Adds a new user in DB. Args: <FirstName> <LastName> <Phone> <Email>" },
-        { "delete", "Deletes the user from DB. Args: <Id>" },
+        { "new", "Adds a new user in DB. Usage: new <FirstName> <LastName> <Phone> <Email>" },
+        { "delete", "Deletes the user from DB. Usage: delete <Id>" },
         {
             "update",
-            "Updates information the user by Id from DB. Args: <Id> <FirstName> <LastName> <Phone> <Email>"
+            "Updates information the user by Id from DB. Usage: update <Id> <FirstName> <LastName> <Phone> <Email>"
         },
-        { "get", "Gets the user from DB. Args: <Id>" }
+        { "get", "Gets the user from DB. Usage: get <Id>" }
     };
 
     public void Execute(string[] args)

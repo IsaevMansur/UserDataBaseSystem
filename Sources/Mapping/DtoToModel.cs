@@ -4,9 +4,9 @@ using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Mapping;
 
-public class DtoToModel : IMapper<UserDto, UserModel>
+public class DtoToModel : IMapper<UserDto, IUserModel>
 {
-    public UserModel Map(UserDto? from)
+    public static UserModel Map(UserDto? from)
     {
         ArgumentNullException.ThrowIfNull(from);
 

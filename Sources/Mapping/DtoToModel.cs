@@ -4,12 +4,10 @@ using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Mapping;
 
-public class DtoToModel : IMapper<UserDto, IUserModel>
+public abstract class DtoToModel : IMapper<UserDto, IUserModel>
 {
-    public static UserModel Map(UserDto? from)
+    public static UserModel Map(UserDto from)
     {
-        ArgumentNullException.ThrowIfNull(from);
-
         var builder = new UserBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
@@ -18,7 +16,7 @@ public class DtoToModel : IMapper<UserDto, IUserModel>
         var build = builder.Build();
 
         if (build.Model == null)
-            throw new NullReferenceException(build.Error);
+            throw new ArgumentNullException(nameof(from), "Building model finish with error");
         return build.Model;
     }
 }

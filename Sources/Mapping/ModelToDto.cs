@@ -4,12 +4,11 @@ using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Mapping;
 
-// ReSharper disable once ClassNeverInstantiated.Global
-public class ModelToDto : IMapper<string[], UserDto>
+public abstract class ModelToDto : IMapper<string[], UserDto>
 {
     public static UserDto Map(string[]? from)
     {
-        ArgumentNullException.ThrowIfNull(from);
+        ArgumentNullException.ThrowIfNull(from, "Model cannot be transferred to DTO");
 
         var builder = new UserBuilder()
             .SetFirstName(from[0])
@@ -19,7 +18,7 @@ public class ModelToDto : IMapper<string[], UserDto>
         var build = builder.Build();
 
         if (build.Model is null)
-            throw new ArgumentNullException(build.Error);
+            throw new ArgumentNullException(nameof(from), "Building model finish with error");
         var model = build.Model;
 
         var dto = new UserDto

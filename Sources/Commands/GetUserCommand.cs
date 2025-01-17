@@ -41,8 +41,10 @@ public class GetUserCommand : IUserCommand
             return;
         }
 
-        var user = _service.GetUser(id);
-        _result = DtoToModel.Map(user).ToString();
+        var dto = _service.GetUser(id);
+        var model = DtoToModel.Map(dto);
+        model.Id = id;
+        _result = model.ToString();
     }
 
     public override string ToString()

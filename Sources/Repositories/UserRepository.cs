@@ -2,7 +2,7 @@
 
 namespace UserDBService.Sources.Repositories;
 
-public class UserRepository : IUserDb
+public class UserRepository : IUserRepository
 {
     private readonly Dictionary<long, IUserModel> _userDb = new();
     private long _currentUserId = 1;

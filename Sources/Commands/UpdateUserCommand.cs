@@ -50,6 +50,4 @@ public class UpdateUserCommand : IUserCommand
         _error = string.Empty;
         return result;
     }
-
-    // ReSharper disable once MemberCanBeMadeStatic.Local
 }

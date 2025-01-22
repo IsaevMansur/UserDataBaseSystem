@@ -1,7 +1,10 @@
 ﻿using UserDBService.Sources.Handlers;
+using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Repositories;
 using UserDBService.Sources.Services;
 
-UserService service = new();
+IUserRepository db = new MemoryUserRepository();
+UserService service = new(db);
 CommandHandler handler = new(service);
 
 Console.WriteLine("Type a command or 'exit' to quit.");

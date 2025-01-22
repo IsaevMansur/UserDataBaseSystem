@@ -1,24 +1,29 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Mapping;
 using UserDBService.Sources.Models.Dto.Requests;
-using UserDBService.Sources.Repositories;
 
 namespace UserDBService.Sources.Services;
 
 public class UserService : IUserService
 {
-    private readonly UserRepository _usersDatabase = new();
+    private readonly IUserRepository _usersDatabase;
+
+    public UserService(IUserRepository usersDatabase)
+    {
+        _usersDatabase = usersDatabase;
+    }
+
     public long Count => _usersDatabase.Count;
 
     public void AddUser(UserDto model)
     {
         var user = DtoToModel.Map(model);
-        _usersDatabase.Add(user);
+        _usersDatabase.Create(user);
     }
 
     public UserDto GetUser(long id)
     {
-        var user = _usersDatabase.Get(id);
+        var user = _usersDatabase.Read(id);
         ArgumentNullException.ThrowIfNull(user, "Service can't find user");
 
         UserDto dto = ModelToDto.Map([user.FirstName, user.LastName, user.Phone, user.Email]);

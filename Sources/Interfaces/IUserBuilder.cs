@@ -5,7 +5,7 @@ namespace UserDBService.Sources.Interfaces;
 
 public interface IUserBuilder
 {
-    public Result<UserModel> Build();
+    public UserModel Build();
     public IUserBuilder SetFirstName(string firstName);
     public IUserBuilder SetLastName(string lastName);
     public IUserBuilder SetEmail(string email);

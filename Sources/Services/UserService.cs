@@ -17,7 +17,7 @@ public class UserService : IUserService
 
     public void AddUser(UserDto model)
     {
-        var user = DtoToModel.Map(model);
+        var user = Mapper.ToUserModel(model);
         _usersDatabase.Create(user);
     }
 
@@ -26,18 +26,20 @@ public class UserService : IUserService
         var user = _usersDatabase.Read(id);
         ArgumentNullException.ThrowIfNull(user, "Service can't find user");
 
-        UserDto dto = ModelToDto.Map([user.FirstName, user.LastName, user.Phone, user.Email]);
+        UserDto dto = Mapper.ToUserDto([user.FirstName, user.LastName, user.Phone, user.Email]);
         return dto;
     }
 
     public IEnumerable<IUserModel> GetAllUsers()
     {
-        return _usersDatabase.GetAll() ?? throw new InvalidOperationException("Service can't find users");
+        var users = _usersDatabase.GetAll();
+        ArgumentNullException.ThrowIfNull(users, "Service can't find users");
+        return users;
     }
 
     public void UpdateUser(long id, UserDto vice)
     {
-        var model = DtoToModel.Map(vice);
+        var model = Mapper.ToUserModel(vice);
         model.Id = id;
         _usersDatabase.Update(id, model);
     }

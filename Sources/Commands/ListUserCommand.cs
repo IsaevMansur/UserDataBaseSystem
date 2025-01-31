@@ -6,24 +6,18 @@ namespace UserDBService.Sources.Commands;
 public class ListUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    private IEnumerable<IUserModel>? _userList;
 
-    public ListUserCommand(IUserService service)
-    {
-        _service = service;
-    }
 
-    public void Execute(string[] args)
-    {
-        _userList = _service.Count == 0 ? null : _service.GetAllUsers();
-    }
+    public ListUserCommand(IUserService service) => _service = service;
 
-    public override string ToString()
+    public string Execute(string[] args)
     {
-        if (_userList is null) return "Base is empty";
+        var users = _service.GetAllUsers();
+        if (users is null)
+            return "No users found";
 
         var table = new ConsoleTable("Id", "LastName", "Email");
-        foreach (var user in _userList)
+        foreach (var user in users)
         {
             table.AddRow(user.Id, user.LastName, user.Email);
         }

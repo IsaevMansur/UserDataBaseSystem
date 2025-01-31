@@ -7,56 +7,29 @@ namespace UserDBService.Sources.Commands;
 public class AddUserCommand : IUserCommand
 {
     private readonly IUserService _service;
-    private string _error = string.Empty;
 
-    public AddUserCommand(IUserService service)
-    {
-        _service = service;
-    }
+    public AddUserCommand(IUserService service) => _service = service;
 
-    public void Execute(string[] args)
+    public string Execute(string[] args)
     {
         if (args.Length < 4)
-        {
-            _error = "Usage: new <FirstName> <LastName> <Phone> <Email>";
-            return;
-        }
+            return "Usage: new <FirstName> <LastName> <Phone> <Email>";
 
         if (!ValidationUtil.IsValidName(args[0]))
-        {
-            _error = "First name must be between 2 and 50 characters.";
-            return;
-        }
+            return "First name must be between 2 and 50 characters.";
 
         if (!ValidationUtil.IsValidName(args[1]))
-        {
-            _error = "Last name must be between 2 and 50 characters.";
-            return;
-        }
+            return "Last name must be between 2 and 50 characters.";
 
         if (!ValidationUtil.IsValidPhone(args[2]))
-        {
-            _error = $"Invalid phone number format. Valid format {ValidationUtil.PhoneSample}";
-            return;
-        }
+            return $"Invalid phone number format. Valid format {ValidationUtil.PhoneSample}";
 
         if (!ValidationUtil.IsValidEmail(args[3]))
-        {
-            _error = $"Invalid email format. Valid format {ValidationUtil.EmailSample}";
-            return;
-        }
+            return $"Invalid email format. Valid format {ValidationUtil.EmailSample}";
 
-        var dto = ModelToDto.Map(args);
+        var dto = Mapper.ToUserDto(args);
 
         _service.AddUser(dto);
-    }
-
-    public override string ToString()
-    {
-        string result = _error == string.Empty
-            ? "User added successfully."
-            : _error;
-        _error = string.Empty;
-        return result;
+        return "User added successfully";
     }
 }

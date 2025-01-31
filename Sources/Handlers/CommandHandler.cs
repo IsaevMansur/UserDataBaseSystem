@@ -25,8 +25,8 @@ public class CommandHandler(IUserService service)
 
         if (_commands.TryGetValue(commandName, out var command))
         {
-            command.Execute(args);
-            Console.WriteLine(command.ToString());
+            string result = command.Execute(args);
+            Console.WriteLine(result);
         }
         else
         {

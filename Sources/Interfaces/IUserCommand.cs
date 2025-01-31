@@ -2,6 +2,5 @@
 
 public interface IUserCommand
 {
-    public void Execute(string[] args);
-    public string? ToString();
+    public string Execute(string[] args);
 }

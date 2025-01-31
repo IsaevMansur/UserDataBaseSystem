@@ -8,41 +8,19 @@ public class DeleteUserCommand : IUserCommand
     private int _userId;
     private string _error = string.Empty;
 
-    public DeleteUserCommand(IUserService service)
-    {
-        _service = service;
-    }
+    public DeleteUserCommand(IUserService service) => _service = service;
 
 
-    public void Execute(string[] args)
+    public string Execute(string[] args)
     {
         if (args.Length < 1)
-        {
-            _error = "Usage: delete <Id>";
-            return;
-        }
-
+            return "Usage: delete <Id>";
         if (!int.TryParse(args[0], out _userId))
-        {
-            _error = "ID must be an integer.";
-            return;
-        }
-
+            return "ID must be an integer.";
         if (!_service.ContainsUser(_userId))
-        {
-            _error = $"User with Id {_userId} not found.";
-            return;
-        }
+            return "User deleted.";
 
         _service.DeleteUser(_userId);
-    }
-
-    public override string ToString()
-    {
-        string result = _error == string.Empty
-            ? $"User with Id {_userId} deleted successfully."
-            : _error;
-        _error = string.Empty;
-        return result;
+        return "User deleted.";
     }
 }

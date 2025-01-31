@@ -18,16 +18,10 @@ public class HelpCommand : IUserCommand
         { "get", "Gets the user from DB. Usage: get <Id>" }
     };
 
-    public void Execute(string[] args)
-    {
-    }
-
-    public override string ToString()
+    public string Execute(string[] args)
     {
         foreach (var pair in CommandsList)
-        {
             Console.WriteLine(pair.Key + ": " + pair.Value);
-        }
 
         return "Type 'help' command for listing all commands.";
     }

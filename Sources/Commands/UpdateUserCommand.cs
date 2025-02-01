@@ -17,7 +17,7 @@ public class UpdateUserCommand : IUserCommand
             return "Base is empty.";
 
         if (args.Length < 5 && !ValidationUtil.IsValidUserAddDetails(details))
-            return "Usage: update <Id> <Firstname> <Lastname> <Phone> <Email>.";
+            return "Usage: update 1 John Johnson 9884556545 John@Johnson.com.";
 
         if (!long.TryParse(args[0], out long id))
             return "ID must be a number.";

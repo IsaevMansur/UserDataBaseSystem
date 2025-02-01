@@ -6,9 +6,9 @@ namespace UserDBService.Sources.Commands;
 
 public class AddUserCommand : IUserCommand
 {
-    private readonly IUserService _service;
+    private readonly IUserService _userService;
 
-    public AddUserCommand(IUserService service) => _service = service;
+    public AddUserCommand(IUserService userService) => _userService = userService;
 
     public string Execute(string[] args)
     {
@@ -16,11 +16,11 @@ public class AddUserCommand : IUserCommand
             return "Usage: new <FirstName> <LastName> <Phone> <Email>";
 
         if (!ValidationUtil.IsValidUserAddDetails(args))
-            return "Invalid arguments. Usage: new <FirstName> <LastName> <Phone> <Email>";
+            return "Invalid arguments. Example: John Johnson 9884556545 John@Johnson.com.";
 
         var dto = Mapper.ToUserDto(args);
 
-        _service.AddUser(dto);
+        _userService.AddUser(dto);
         return "User added successfully";
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UserDBService.Sources.Interfaces.Models;
 using UserDBService.Sources.Models.Dto.Requests;
 
-namespace UserDBService.Sources.Interfaces;
+namespace UserDBService.Sources.Services;
 
 public interface IUserService
 {

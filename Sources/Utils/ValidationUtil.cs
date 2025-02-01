@@ -4,8 +4,8 @@ namespace UserDBService.Sources.Utils;
 
 public static partial class ValidationUtil
 {
-    public const string EmailSample = "example@gmail.com";
-    public const string PhoneSample = "9122123456";
+    // public const string EmailSample = "example@gmail.com";
+    // public const string PhoneSample = "9122123456";
 
     private static readonly Regex EmailRegex = EmailValidFormat();
 

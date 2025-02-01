@@ -1,4 +1,4 @@
-﻿using UserDBService.Sources.Interfaces;
+﻿using UserDBService.Sources.Services;
 
 namespace UserDBService.Sources.Commands;
 
@@ -6,7 +6,6 @@ public class DeleteUserCommand : IUserCommand
 {
     private readonly IUserService _service;
     private int _userId;
-    private string _error = string.Empty;
 
     public DeleteUserCommand(IUserService service) => _service = service;
 

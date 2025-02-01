@@ -1,5 +1,5 @@
-﻿using UserDBService.Sources.Interfaces;
-using UserDBService.Sources.Mapping;
+﻿using UserDBService.Sources.Mapping;
+using UserDBService.Sources.Services;
 
 namespace UserDBService.Sources.Commands;
 

@@ -1,6 +1,4 @@
-﻿using UserDBService.Sources.Interfaces;
-
-namespace UserDBService.Sources.Commands;
+﻿namespace UserDBService.Sources.Commands;
 
 public class HelpCommand : IUserCommand
 {

@@ -1,4 +1,4 @@
-﻿namespace UserDBService.Sources.Interfaces;
+﻿namespace UserDBService.Sources.Commands;
 
 public interface IUserCommand
 {

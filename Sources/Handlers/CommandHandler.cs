@@ -1,5 +1,6 @@
 ﻿using UserDBService.Sources.Commands;
 using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Services;
 
 namespace UserDBService.Sources.Handlers;
 
@@ -17,7 +18,7 @@ public class CommandHandler(IUserService service)
 
     public void ProcessCommand(string input)
     {
-        var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length == 0) return;
 
         string commandName = parts[0].ToLower();

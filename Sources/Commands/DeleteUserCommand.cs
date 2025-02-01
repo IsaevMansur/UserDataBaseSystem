@@ -17,10 +17,9 @@ public class DeleteUserCommand : IUserCommand
             return "Usage: delete <Id>";
         if (!int.TryParse(args[0], out _userId))
             return "ID must be an integer.";
-        if (!_service.ContainsUser(_userId))
-            return "User deleted.";
+        if (_service.ContainsUser(_userId))
+            _service.DeleteUser(_userId);
 
-        _service.DeleteUser(_userId);
         return "User deleted.";
     }
 }

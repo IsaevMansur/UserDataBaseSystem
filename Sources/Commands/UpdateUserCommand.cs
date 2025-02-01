@@ -1,31 +1,33 @@
 ﻿using UserDBService.Sources.Interfaces;
 using UserDBService.Sources.Mapping;
+using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
 public class UpdateUserCommand : IUserCommand
 {
-    private readonly IUserService _service;
+    private readonly IUserService _userService;
 
-    public UpdateUserCommand(IUserService service) => _service = service;
+    public UpdateUserCommand(IUserService userService) => _userService = userService;
 
     public string Execute(string[] args)
     {
-        if (_service.Count == 0)
+        string[] details = args[1..];
+        if (_userService.CountUsers == 0)
             return "Base is empty.";
 
-        if (args.Length < 5)
+        if (args.Length < 5 && !ValidationUtil.IsValidUserAddDetails(details))
             return "Usage: update <Id> <Firstname> <Lastname> <Phone> <Email>.";
 
         if (!long.TryParse(args[0], out long id))
             return "ID must be a number.";
 
-        if (!_service.ContainsUser(id))
+        if (!_userService.ContainsUser(id))
             return "User does not exist.";
 
-        var dto = Mapper.ToUserDto(args[1..]);
+        var dto = Mapper.ToUserDto(details);
 
-        _service.UpdateUser(id, dto);
+        _userService.UpdateUser(id, dto);
         return "User by id updated successfully.";
     }
 }

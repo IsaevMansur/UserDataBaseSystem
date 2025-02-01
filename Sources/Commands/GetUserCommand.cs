@@ -5,14 +5,14 @@ namespace UserDBService.Sources.Commands;
 
 public class GetUserCommand : IUserCommand
 {
-    private readonly IUserService _service;
+    private readonly IUserService _userService;
 
 
-    public GetUserCommand(IUserService service) => _service = service;
+    public GetUserCommand(IUserService userService) => _userService = userService;
 
     public string Execute(string[] args)
     {
-        if (_service.Count == 0)
+        if (_userService.CountUsers == 0)
             return "Base is empty.";
 
         if (args.Length < 1)
@@ -21,10 +21,10 @@ public class GetUserCommand : IUserCommand
         if (!long.TryParse(args[0], out long id))
             return "Id must be an integer.";
 
-        if (!_service.ContainsUser(id))
+        if (!_userService.ContainsUser(id))
             return $"User with id {id} not found.";
 
-        var dto = _service.GetUser(id);
+        var dto = _userService.GetUser(id);
         var model = Mapper.ToUserModel(dto);
         model.Id = id;
         return model.ToString();

@@ -13,7 +13,7 @@ public class UserService : IUserService
         _usersDatabase = usersDatabase;
     }
 
-    public long Count => _usersDatabase.Count;
+    public long CountUsers => _usersDatabase.Count;
 
     public void AddUser(UserDto model)
     {

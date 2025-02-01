@@ -4,7 +4,7 @@ namespace UserDBService.Sources.Interfaces;
 
 public interface IUserService
 {
-    public long Count { get; }
+    public long CountUsers { get; }
     public void AddUser(UserDto model);
     public UserDto GetUser(long id);
     public IEnumerable<IUserModel>? GetAllUsers();

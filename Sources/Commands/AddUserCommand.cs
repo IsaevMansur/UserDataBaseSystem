@@ -15,8 +15,9 @@ public class AddUserCommand : IUserCommand
         if (args.Length < 4)
             return "Usage: new <FirstName> <LastName> <Phone> <Email>";
 
-        if (!ValidationUtil.IsValidUserAddDetails(args))
-            return "Invalid arguments. Example: John Johnson 9884556545 John@Johnson.com.";
+
+        if (!ValidationUtil.IsValidUserAddDetails(args, out string error))
+            return $"{error}. Example: John Johnson 9884556545 John@Johnson.com.";
 
         var dto = Mapper.ToUserDto(args);
 

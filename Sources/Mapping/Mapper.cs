@@ -13,22 +13,18 @@ public class Mapper
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)
             .SetEmail(from.Email);
-        var user = builder.Build();
 
-        return user;
+        return builder.Build();
     }
 
-    public static UserDto ToUserDto(string[]? from)
+    public static UserDto ToUserDto(string[] from)
     {
-        ArgumentNullException.ThrowIfNull(from, "Model cannot be transferred to DTO");
-
-        var dto = new UserDto
+        return new UserDto
         {
             FirstName = from[0],
             LastName = from[1],
             Phone = from[2],
             Email = from[3]
         };
-        return dto;
     }
 }

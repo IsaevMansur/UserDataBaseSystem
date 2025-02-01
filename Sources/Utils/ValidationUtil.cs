@@ -15,12 +15,34 @@ public static partial class ValidationUtil
     private static bool IsValidName(string name) =>
         !string.IsNullOrEmpty(name) && name.Length > 1 && name.All(char.IsLetter);
 
-    public static bool IsValidUserAddDetails(string[] details)
+    public static bool IsValidUserAddDetails(string[] details, out string error)
     {
-        return IsValidName(details[0]) && // first name
-               IsValidName(details[1]) && // last name
-               IsValidEmail(details[2]) && // email
-               IsValidPhone(details[3]); // phone
+        if (!IsValidName(details[0]))
+        {
+            error = "Name is invalid";
+            return false;
+        }
+
+        if (!IsValidName(details[1]))
+        {
+            error = "Invalid user last name";
+            return false;
+        }
+
+        if (!IsValidEmail(details[2]))
+        {
+            error = "Invalid email";
+            return false;
+        }
+
+        if (!IsValidPhone(details[3]))
+        {
+            error = "Invalid phone number";
+            return false;
+        }
+
+        error = "";
+        return true;
     }
 
     [GeneratedRegex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",

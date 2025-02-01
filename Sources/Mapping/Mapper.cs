@@ -8,7 +8,7 @@ public class Mapper
 {
     public static IUserModel ToUserModel(UserDto from)
     {
-        var builder = new UserBuilder()
+        var builder = UserModel.CreateBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)

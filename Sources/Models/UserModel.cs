@@ -10,8 +10,11 @@ public class UserModel : IUserModel
     public string Phone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
+    public static UserBuilder CreateBuilder() => new();
+
     public override string ToString()
     {
         return $"{Id}:{LastName}:{Email}";
     }
+
 }

@@ -6,7 +6,6 @@ public class UserBuilder : IUserBuilder
 {
     private readonly UserModel _user = new();
 
-
     public UserModel Build()
     {
         return _user;

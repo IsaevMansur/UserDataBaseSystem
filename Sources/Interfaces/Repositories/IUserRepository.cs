@@ -1,4 +1,6 @@
-﻿namespace UserDBService.Sources.Interfaces;
+﻿using UserDBService.Sources.Interfaces.Models;
+
+namespace UserDBService.Sources.Interfaces.Repositories;
 
 public interface IUserRepository
 {

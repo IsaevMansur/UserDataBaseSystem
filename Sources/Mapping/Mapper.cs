@@ -1,4 +1,5 @@
 ﻿using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Interfaces.Models;
 using UserDBService.Sources.Models;
 using UserDBService.Sources.Models.Dto.Requests;
 
@@ -8,7 +9,7 @@ public class Mapper
 {
     public static IUserModel ToUserModel(UserDto from)
     {
-        var builder = UserModel.CreateBuilder()
+        IUserBuilder builder = UserModel.CreateBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)

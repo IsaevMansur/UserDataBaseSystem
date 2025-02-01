@@ -1,5 +1,5 @@
 ﻿using UserDBService.Sources.Handlers;
-using UserDBService.Sources.Interfaces;
+using UserDBService.Sources.Interfaces.Repositories;
 using UserDBService.Sources.Repositories;
 using UserDBService.Sources.Services;
 

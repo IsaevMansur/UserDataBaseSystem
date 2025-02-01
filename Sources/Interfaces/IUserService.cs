@@ -1,4 +1,5 @@
-﻿using UserDBService.Sources.Models.Dto.Requests;
+﻿using UserDBService.Sources.Interfaces.Models;
+using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Interfaces;
 

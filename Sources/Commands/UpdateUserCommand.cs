@@ -4,22 +4,21 @@ using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class UpdateUserCommand : IUserCommand
+public class UpdateUserCommand : UserCommandBase
 {
     private readonly IUserService _userService;
 
     public UpdateUserCommand(IUserService userService) => _userService = userService;
 
-    public string Execute(string[] args)
+    public override string Execute(string[] args)
     {
         if (_userService.CountUsers == 0)
             return "Base is empty.";
 
-        if (args.Length < 5)
+        if (args.Length is not 5)
             return "Usage: new <FirstName> <LastName> <Phone> <Email>";
 
         string[] details = args[1..];
-
 
         if (!ValidationUtil.IsValidUserAddDetails(args, out string error))
             return $"{error}. Example: 1 John Johnson 9884556545 John@Johnson.com.";

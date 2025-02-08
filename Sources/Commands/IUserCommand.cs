@@ -1,6 +1,6 @@
 ﻿namespace UserDBService.Sources.Commands;
 
-public interface IUserCommand
+public abstract class UserCommandBase
 {
-    public string Execute(string[] args);
+    public abstract string Execute(string[] args);
 }

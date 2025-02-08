@@ -3,14 +3,13 @@ using UserDBService.Sources.Services;
 
 namespace UserDBService.Sources.Commands;
 
-public class ListUserCommand : IUserCommand
+public class ListUserCommand : UserCommandBase
 {
     private readonly IUserService _userService;
 
-
     public ListUserCommand(IUserService userService) => _userService = userService;
 
-    public string Execute(string[] args)
+    public override string Execute(string[] args)
     {
         var users = _userService.GetAllUsers();
         if (users is null)

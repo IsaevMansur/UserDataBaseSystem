@@ -14,6 +14,10 @@ while (true)
 
     string input = Console.ReadLine() ?? "";
 
-    if (input.ToLower() is "exit" && input.ToLower() is "") break;
+    if (input.ToLower() is "exit")
+        break;
+    if (input.ToLower() is "")
+        continue;
+
     handler.ProcessCommand(input);
 }

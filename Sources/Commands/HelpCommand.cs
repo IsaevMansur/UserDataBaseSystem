@@ -1,6 +1,6 @@
 ﻿namespace UserDBService.Sources.Commands;
 
-public class HelpCommand : IUserCommand
+public class HelpCommand : UserCommandBase
 {
     private static readonly Dictionary<string, string> CommandsList = new()
     {
@@ -13,10 +13,10 @@ public class HelpCommand : IUserCommand
             "update",
             "Updates information the user by Id from DB. Usage: update <Id> <FirstName> <LastName> <Phone> <Email>"
         },
-        { "get", "Gets the user from DB. Usage: get <Id>" }
+        { "get", "Gets the user from DB. Usage: get <Id>" },
     };
 
-    public string Execute(string[] args)
+    public override string Execute(string[] args)
     {
         foreach (var pair in CommandsList)
             Console.WriteLine(pair.Key + ": " + pair.Value);

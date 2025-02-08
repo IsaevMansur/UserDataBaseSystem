@@ -4,17 +4,16 @@ using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class AddUserCommand : IUserCommand
+public class AddUserCommand : UserCommandBase
 {
     private readonly IUserService _userService;
 
     public AddUserCommand(IUserService userService) => _userService = userService;
 
-    public string Execute(string[] args)
+    public override string Execute(string[] args)
     {
-        if (args.Length < 4)
+        if (args.Length is not 4)
             return "Usage: new <FirstName> <LastName> <Phone> <Email>";
-
 
         if (!ValidationUtil.IsValidUserAddDetails(args, out string error))
             return $"{error}. Example: John Johnson 9884556545 John@Johnson.com.";

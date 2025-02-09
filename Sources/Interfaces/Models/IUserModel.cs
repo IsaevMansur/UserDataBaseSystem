@@ -9,6 +9,6 @@ public interface IUserModel
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
-    public static UserBuilder CreateBuilder() => new();
+    public static UserModel.UserBuilder CreateUser() => new();
     public string ToString();
 }

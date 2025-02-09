@@ -8,7 +8,8 @@ public class Mapper
 {
     public static IUserModel ToUserModel(UserDto from)
     {
-        IUserBuilder builder = UserModel.CreateBuilder()
+        IUserBuilder builder = UserModel
+            .CreateBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
             .SetPhone(from.Phone)
@@ -24,7 +25,7 @@ public class Mapper
             FirstName = from[0],
             LastName = from[1],
             Phone = from[2],
-            Email = from[3]
+            Email = from[3],
         };
     }
 }

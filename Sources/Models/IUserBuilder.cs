@@ -1,6 +1,4 @@
-﻿using UserDBService.Sources.Models;
-
-namespace UserDBService.Sources.Interfaces.Models;
+﻿namespace UserDBService.Sources.Models;
 
 public interface IUserBuilder
 {

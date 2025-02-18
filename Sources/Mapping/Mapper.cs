@@ -1,5 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.Models;
-using UserDBService.Sources.Models;
+﻿using UserDBService.Sources.Models;
 using UserDBService.Sources.Models.Dto.Requests;
 
 namespace UserDBService.Sources.Mapping;
@@ -8,7 +7,7 @@ public class Mapper
 {
     public static IUserModel ToUserModel(UserDto from)
     {
-        IUserBuilder builder = UserModel
+        var builder = UserModel
             .CreateBuilder()
             .SetFirstName(from.FirstName)
             .SetLastName(from.LastName)
@@ -25,7 +24,7 @@ public class Mapper
             FirstName = from[0],
             LastName = from[1],
             Phone = from[2],
-            Email = from[3],
+            Email = from[3]
         };
     }
 }

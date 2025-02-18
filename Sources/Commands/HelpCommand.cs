@@ -13,7 +13,7 @@ public class HelpCommand : UserCommandBase
             "update",
             "Updates information the user by Id from DB. Usage: update <Id> <FirstName> <LastName> <Phone> <Email>"
         },
-        { "get", "Gets the user from DB. Usage: get <Id>" },
+        { "get", "Gets the user from DB. Usage: get <Id>" }
     };
 
     public override string Execute(string[] args)

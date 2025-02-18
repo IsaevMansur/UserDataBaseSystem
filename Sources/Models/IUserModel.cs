@@ -1,6 +1,4 @@
-﻿using UserDBService.Sources.Models;
-
-namespace UserDBService.Sources.Interfaces.Models;
+﻿namespace UserDBService.Sources.Models;
 
 public interface IUserModel
 {
@@ -9,6 +7,11 @@ public interface IUserModel
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
-    public static UserModel.UserBuilder CreateUser() => new();
+
+    public static UserModel.UserBuilder CreateUser()
+    {
+        return new UserModel.UserBuilder();
+    }
+
     public string ToString();
 }

@@ -6,14 +6,20 @@ public static partial class ValidationUtil
 {
     private static readonly Regex EmailRegex = EmailValidFormat();
 
-    private static bool IsValidEmail(string email) =>
-        !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
+    private static bool IsValidEmail(string email)
+    {
+        return !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
+    }
 
-    private static bool IsValidPhone(string phone) =>
-        !string.IsNullOrEmpty(phone) && phone.All(char.IsDigit) && phone.Length == 10;
+    private static bool IsValidPhone(string phone)
+    {
+        return !string.IsNullOrEmpty(phone) && phone.All(char.IsDigit) && phone.Length == 10;
+    }
 
-    private static bool IsValidName(string name) =>
-        !string.IsNullOrEmpty(name) && name.Length > 1 && name.All(char.IsLetter);
+    private static bool IsValidName(string name)
+    {
+        return !string.IsNullOrEmpty(name) && name.Length > 1 && name.All(char.IsLetter);
+    }
 
     public static bool IsValidUserAddDetails(string[] details, out string error)
     {

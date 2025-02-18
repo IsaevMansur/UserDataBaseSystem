@@ -1,10 +1,10 @@
-﻿using UserDBService.Sources.Interfaces.Models;
-
-namespace UserDBService.Sources.Models;
+﻿namespace UserDBService.Sources.Models;
 
 public class UserModel : IUserModel
 {
-    private UserModel() { }
+    private UserModel()
+    {
+    }
 
     public long Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
@@ -12,7 +12,10 @@ public class UserModel : IUserModel
     public string Phone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
-    public static UserBuilder CreateBuilder() => new();
+    public static UserBuilder CreateBuilder()
+    {
+        return new UserBuilder();
+    }
 
     public override string ToString()
     {

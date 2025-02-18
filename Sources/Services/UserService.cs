@@ -1,7 +1,7 @@
-﻿using UserDBService.Sources.Interfaces.Models;
-using UserDBService.Sources.Interfaces.Repositories;
-using UserDBService.Sources.Mapping;
+﻿using UserDBService.Sources.Mapping;
+using UserDBService.Sources.Models;
 using UserDBService.Sources.Models.Dto.Requests;
+using UserDBService.Sources.Repositories;
 
 namespace UserDBService.Sources.Services;
 
@@ -27,7 +27,7 @@ public class UserService : IUserService
         var user = _usersDatabase.Read(id);
         ArgumentNullException.ThrowIfNull(user, "Service can't find user");
 
-        UserDto dto = Mapper.ToUserDto([user.FirstName, user.LastName, user.Phone, user.Email]);
+        var dto = Mapper.ToUserDto([user.FirstName, user.LastName, user.Phone, user.Email]);
         return dto;
     }
 
@@ -50,5 +50,8 @@ public class UserService : IUserService
         _usersDatabase.Remove(id);
     }
 
-    public bool ContainsUser(long id) => _usersDatabase.Contains(id);
+    public bool ContainsUser(long id)
+    {
+        return _usersDatabase.Contains(id);
+    }
 }

@@ -4,15 +4,11 @@ using UserDBService.Sources.Utils;
 
 namespace UserDBService.Sources.Commands;
 
-public class UpdateUserCommand : UserCommandBase
+public class UpdateUserCommand(IUserService userService) : UserCommandBase
 {
-    private readonly IUserService _userService;
-
-    public UpdateUserCommand(IUserService userService) => _userService = userService;
-
     public override string Execute(string[] args)
     {
-        if (_userService.CountUsers == 0)
+        if (userService.CountUsers == 0)
             return "Base is empty.";
 
         if (args.Length is not 5)
@@ -20,18 +16,18 @@ public class UpdateUserCommand : UserCommandBase
 
         string[] details = args[1..];
 
-        if (!ValidationUtil.IsValidUserAddDetails(args, out string error))
+        if (!ValidationUtil.IsValidUserAddDetails(args, out var error))
             return $"{error}. Example: 1 John Johnson 9884556545 John@Johnson.com.";
 
-        if (!long.TryParse(args[0], out long id))
+        if (!long.TryParse(args[0], out var id))
             return "ID must be a number.";
 
-        if (!_userService.ContainsUser(id))
+        if (!userService.ContainsUser(id))
             return "User does not exist.";
 
         var dto = Mapper.ToUserDto(details);
 
-        _userService.UpdateUser(id, dto);
+        userService.UpdateUser(id, dto);
         return "User by id updated successfully.";
     }
 }

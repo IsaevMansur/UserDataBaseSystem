@@ -1,5 +1,4 @@
-﻿using UserDBService.Sources.Interfaces.Models;
-using UserDBService.Sources.Interfaces.Repositories;
+﻿using UserDBService.Sources.Models;
 
 namespace UserDBService.Sources.Repositories;
 
@@ -15,7 +14,10 @@ public class MemoryUserRepository : IUserRepository
         _userDb.Add(user.Id, user);
     }
 
-    public IUserModel Read(long id) => _userDb[id];
+    public IUserModel Read(long id)
+    {
+        return _userDb[id];
+    }
 
     public void Update(long id, IUserModel user)
     {
@@ -23,9 +25,18 @@ public class MemoryUserRepository : IUserRepository
         _userDb[id] = user;
     }
 
-    public void Remove(long id) => _userDb.Remove(id);
+    public void Remove(long id)
+    {
+        _userDb.Remove(id);
+    }
 
-    public bool Contains(long id) => _userDb.ContainsKey(id);
+    public bool Contains(long id)
+    {
+        return _userDb.ContainsKey(id);
+    }
 
-    public IEnumerable<IUserModel> GetAll() => _userDb.Values;
+    public IEnumerable<IUserModel> GetAll()
+    {
+        return _userDb.Values;
+    }
 }

@@ -1,6 +1,4 @@
 ﻿using UserDBService.Sources.Handlers;
-using UserDBService.Sources.Interfaces.Repositories;
-using UserDBService.Sources.Models;
 using UserDBService.Sources.Repositories;
 using UserDBService.Sources.Services;
 
@@ -13,7 +11,7 @@ while (true)
 {
     Console.Write("> ");
 
-    string input = Console.ReadLine() ?? "";
+    var input = Console.ReadLine() ?? "";
 
     if (input.ToLower() is "exit")
         break;
